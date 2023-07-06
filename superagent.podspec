@@ -15,7 +15,7 @@ Pod::Spec.new do |spec|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  spec.name         = "superagent"
+  spec.name         = "Superagent"
   spec.version      = "0.0.8"
   spec.summary      = "Build, deploy, and manage LLM-powered agents on  platforms."
 

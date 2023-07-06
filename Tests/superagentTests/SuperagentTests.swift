@@ -129,7 +129,7 @@ class SuperagentSdkTests: XCTestCase {
 				let name = "sample_name"
 				let url = URL(string: "https://www.example.com")!
 				let type = DocumentTypes.pdf
-				let result = try await (self.superagentSDK?.createDocument(name: name, url: url, type: type,authorization:nil,template: ""))
+				let result = try await (self.superagentSDK?.createDocument(name: name, url: url, type: type,authorization:nil, template: ""))
 				XCTAssertNotNil(result, "Create document failed")
 				expectation.fulfill()
 			} catch {
