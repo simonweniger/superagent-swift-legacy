@@ -1,18 +1,18 @@
 # ``Superagent - Swift SDK``
-## Build, deploy, and manage LLM-powered agents (superagent.sh)[htpps://superagent.sh]
-### A community made SwiftSDK for the Superagen LLM Framework.
+### Build, deploy, and manage LLM-powered agents on  platforms 
+A community-made SwiftSDK for the Superagen LLM Framework. You need to have a superagent API Key in order to use the SDK.
+To get your API key head over to [superagent.sh](https://superagent.sh) or fork the main repo and self-host it.
+
+Learn more about Superagent on the main repo: [Superagent Repo](https://github.com/homanp/superagent)
+
+Please submit any issues you encounter, join the superagent community or reach out to me to talk about LLM applications on  platforms.
+
+### Overview
+#### Concepts
+These are the core concepts that Superagent uses to create LLM Agents. It contains practical examples as well as links to papers or sources."
 
 
-<!--@START_MENU_TOKEN@-->Summary<!--@END_MENU_TOKEN@-->
-
-## Overview
-
----
-title: Concepts
-description: "These are the core concepts that Superagent uses to create LLM Agents. It contains practical examples as well as links to papers or sources."
----
-
-### Agents
+#### Agents
 
 An agent is a program or system that is designed to perform a specific task or set of tasks.
 In the context of Supergent, an agent is a Large Language Model that has access to a suite of tools and can decide which tool to use based on user input.
@@ -27,7 +27,7 @@ An agent can be invoked with `memory` as well as a `document` which gives the A
 - [ReAct](https://arxiv.org/pdf/2210.03629.pdf)
 - [Plan-and-solve](https://arxiv.org/abs/2305.04091)
 
-### Documents
+#### Documents
 
 Superagent allows users to do question answering over documents by attaching a `Document` to an `Agent`.
 Documents are files, such as PDF, TXT, images, Markdown etc. that can be ingested by passing a publicly available `URL` to the Superagent [API](/api-reference/authentication).
@@ -35,7 +35,7 @@ Superagent splits these documents into smaller chunks and stores them in a vecto
 
 This approach has some downsides when working with tabular data. We are looking into how to best approach this problem.
 
-### Prompts
+#### Prompts
 
 Superagent allows users to configure their `Agents` using prompts.
 A prompt is piece of text that gives context to the LLM. It can contain instructions on how the Agent should act, input variables used for injecting data into the prompt.
@@ -288,4 +288,4 @@ do {
 }
 ```
 
-Note: If in error cases, if the function returns a `SuperagentError`, it usually means that the operation failed on server side. Use `.localizedDescription` to get a human-readable error message.
+Note: If in error cases, the function returns a `SuperagentError`, it usually means that the operation failed on the server side. Use `.localizedDescription` to get a human-readable error message.
