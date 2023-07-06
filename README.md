@@ -1,4 +1,10 @@
 # ``Superagent - Swift SDK``
+[![SwiftUI](https://img.shields.io/badge/-SwiftUI-ff69b4)](https://developer.apple.com/documentation/swiftui)
+[![iOS 16](https://img.shields.io/badge/-iOS%2016-blue)](https://developer.apple.com/ios/)
+<img alt="Github License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+<img alt="Discord" src="https://img.shields.io/discord/1110910277110743103?label=Discord&logo=discord&logoColor=white&style=plastic&color=d7b023)](https://discord.gg/e8j7mgjDUK" />
+
+
 ### Build, deploy, and manage LLM-powered agents on  platforms 
 A community-made SwiftSDK for the Superagen LLM Framework. You need to have a superagent API Key in order to use the SDK.
 To get your API key head over to [superagent.sh](https://superagent.sh) or fork the main repo and self-host it.
@@ -7,10 +13,17 @@ Learn more about Superagent on the main repo: [Superagent Repo](https://github.c
 
 Please submit any issues you encounter, join the superagent community, or reach out to [me](https://simonweniger.com) to talk about LLM applications on  platforms.
 
-### Overview
-#### Concepts
-These are the core concepts that Superagent uses to create LLM Agents. It contains practical examples as well as links to papers or sources."
+## 🥷 Superagent Cloud
 
+If you are looking for a plug-and-play way to get started be sure to checkout [Superagent.sh](https://Superagent.sh).
+
+## 🚧 Roadmap
+
+You can follow the [roadmap here](https://github.com/users/homanp/projects/4)
+
+### Overview
+**🧐 What is this?**
+Superagent is a powerful tool that simplifies the configuration and deployment of LLM (Large Language Model) Agents to production. It provides a range of features and functionalities to make it easier for developers to build, manage and deploy AI agents to production including features such as built in memory and document retrieval via vector dbs, powerful tools, webhooks, cron jobs etc.
 
 #### Agents
 
