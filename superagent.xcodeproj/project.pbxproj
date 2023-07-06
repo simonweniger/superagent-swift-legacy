@@ -11,6 +11,7 @@
 		A5D419292A56BF0400CA856B /* superagent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5D4191E2A56BF0400CA856B /* superagent.framework */; };
 		A5D4192E2A56BF0400CA856B /* superagentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D4192D2A56BF0400CA856B /* superagentTests.swift */; };
 		A5D4192F2A56BF0400CA856B /* superagent.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D419212A56BF0400CA856B /* superagent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5D4193B2A56EA6200CA856B /* superagent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D4193A2A56EA6200CA856B /* superagent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		A5D419222A56BF0400CA856B /* superagent.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = superagent.docc; sourceTree = "<group>"; };
 		A5D419282A56BF0400CA856B /* superagentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = superagentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5D4192D2A56BF0400CA856B /* superagentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = superagentTests.swift; sourceTree = "<group>"; };
+		A5D4193A2A56EA6200CA856B /* superagent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = superagent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			children = (
 				A5D419212A56BF0400CA856B /* superagent.h */,
 				A5D419222A56BF0400CA856B /* superagent.docc */,
+				A5D4193A2A56EA6200CA856B /* superagent.swift */,
 			);
 			path = superagent;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5D419232A56BF0400CA856B /* superagent.docc in Sources */,
+				A5D4193B2A56EA6200CA856B /* superagent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +406,7 @@
 		A5D419362A56BF0400CA856B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HZ6WJGMKG3;
@@ -418,6 +423,7 @@
 		A5D419372A56BF0400CA856B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HZ6WJGMKG3;
