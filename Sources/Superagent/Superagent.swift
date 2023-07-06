@@ -7,31 +7,31 @@
 
 import Foundation
 
-enum HttpMethod: String {
+public enum HttpMethod: String {
 	case get = "GET"
 	case post = "POST"
 	case delete = "DELETE"
 	case patch = "PATCH"
 }
-enum SuperagentError: Error {
+public enum SuperagentError: Error {
 	case invalidResponse
 	case requestFailed
 	case failedToRetrievePrompt
 	case failedToUpdatePrompt
 	case failedToCreatePrompt
 }
-enum DocumentTypes: String {
+public enum DocumentTypes: String {
 	case text = "TEXT"
 	case pdf = "PDF"
 	case youtube = "YOUTUBE"
 	case csv = "CSV"
 	case url = "URL"
 }
-enum LLMTypes : String {
+public enum LLMTypes : String {
 	case openai = "OPENAI"
 	case react = "REACT"
 }
-enum ToolTypes: String {
+public enum ToolTypes: String {
 	case search = "SEARCH"
 	case wolframAlpha = "WOLFRAM_ALPHA"
 	case replicate = "REPLICATE"
@@ -39,7 +39,7 @@ enum ToolTypes: String {
 	case agent = "AGENT"
 	case openapi = "OPENAPI"
 }
-struct LLMModel {
+public struct LLMModel {
 	enum Provider: String {
 		case openai
 		case openaiChat = "openai-chat"
@@ -56,7 +56,7 @@ struct LLMModel {
 let ACCEPT_HEADER_VALUE = "application/json"
 
 @available(macOS 12.0, *)
-struct SuperagentSDK {
+public struct SuperagentSDK {
 	
 	var baseUrl: String
 	var authToken: String
