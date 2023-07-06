@@ -5,7 +5,7 @@ To get your API key head over to [superagent.sh](https://superagent.sh) or fork 
 
 Learn more about Superagent on the main repo: [Superagent Repo](https://github.com/homanp/superagent)
 
-Please submit any issues you encounter, join the superagent community or reach out to me to talk about LLM applications on  platforms.
+Please submit any issues you encounter, join the superagent community, or reach out to [me](https://simonweniger.com) to talk about LLM applications on  platforms.
 
 ### Overview
 #### Concepts
