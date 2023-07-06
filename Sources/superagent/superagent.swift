@@ -110,6 +110,7 @@ struct SuperagentSDK {
 			  throw SuperagentError.invalidResponse
 		  }
 		}
+		return response
 	}
 	
 	//Prompts
@@ -272,16 +273,6 @@ struct SuperagentSDK {
 		} catch {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-	}
-	
-	//Agent Documents
-	///Get all Documents from an Agent
-	func getAgentDocuments() async throws -> [String: Any] {
-		let data = try await request(method: .get, endpoint: "/agent-documents")
-		guard let outputData = data as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
-		}
-		return outputData
 	}
 
 	///Add a Document to an Agent
