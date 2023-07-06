@@ -109,13 +109,6 @@ struct SuperagentSDK {
 		  } else {
 			  throw SuperagentError.invalidResponse
 		  }
-		} else {
-		  if let output = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-			 ((output["message"] as? String) != nil) {
-			  throw SuperagentError.requestFailed
-		  } else {
-			  throw SuperagentError.invalidResponse
-		  }
 		}
 	}
 	
