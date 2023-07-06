@@ -2,11 +2,11 @@
 //  superagentTests.swift
 //  superagentTests
 //
-//  Created by vonweniger on 06.07.23.
+//  Created by Simon Weniger on 06.07.23.
 //
 
 import XCTest
-@testable import superagent_swift
+@testable import superagent
 
 class SuperagentSdkTests: XCTestCase {
 

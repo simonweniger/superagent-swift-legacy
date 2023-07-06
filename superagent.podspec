@@ -66,7 +66,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source       = { :git => "https://github.com/simonweniger/superagent-swift/tree/main.git", :tag => spec.version.to_s }
+  spec.source       = { :git => "https://github.com/simonweniger/superagent-swift.git", :tag => spec.version.to_s }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -77,6 +77,8 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "superagent-swift/**/*.swift"
+  spec.source_files  = "Sources/superagent/**/*.{swift}"
+  spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
 end

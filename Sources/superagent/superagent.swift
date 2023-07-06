@@ -52,6 +52,9 @@ struct LLMModel {
 	let apiKey: String?
 	
 }
+
+let ACCEPT_HEADER_VALUE = "application/json"
+
 @available(macOS 12.0, *)
 struct SuperagentSDK {
 	
@@ -69,10 +72,11 @@ struct SuperagentSDK {
 		guard let url = URL(string: "\(self.baseUrl)\(endpoint)") else {
 			throw URLError(.badURL)
 		}
+		
 		var request = URLRequest(url: url)
 		request.httpMethod = method.rawValue.uppercased()
-		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-		request.addValue("Bearer \(self.authToken)", forHTTPHeaderField: "authorization")
+		request.addValue(ACCEPT_HEADER_VALUE, forHTTPHeaderField: "Content-Type")
+		request.addValue("Bearer \(self.authToken)", forHTTPHeaderField: "Authorization")
 		
 		if let data = data {
 			if method == .get {
@@ -80,7 +84,8 @@ struct SuperagentSDK {
 				components.queryItems = data.map {
 					URLQueryItem(name: $0.key, value: "\($0.value)")
 				}
-				request.url = components.url
+				guard let componentUrl = components.url else { throw SuperagentError.invalidResponse }
+				request.url = componentUrl
 			} else {
 				let jsonData = try JSONSerialization.data(withJSONObject: data)
 				request.httpBody = jsonData
@@ -105,7 +110,7 @@ struct SuperagentSDK {
 			}
 		} else {
 			if let output = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-			   let _ = output["message"] as? String {
+			   ((output["message"] as? String) != nil) {
 				throw SuperagentError.requestFailed
 			} else {
 				throw SuperagentError.invalidResponse
@@ -118,10 +123,10 @@ struct SuperagentSDK {
 	//Prompts
 	///Retuns a specific prompt
 	func getPrompt(id: String) async throws -> [String: Any] {
-		do {
-			let data = try await request(method: .get, endpoint: "/prompts/\(id)")
-			return data as? [String: Any] ?? [:]
-		} catch {
+		let data = try await request(method: .get, endpoint: "/prompts/\(id)")
+		if let outputData = data as? [String: Any] {
+			return outputData
+		} else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 	}
@@ -210,10 +215,10 @@ struct SuperagentSDK {
 	
 	///Create a new prompt
 	func createDocument(name: String,
-						 url: URL,
-						 type: DocumentTypes,
-						 authorization: Any? = nil,
-					  template: String) async throws -> [String: Any] {
+						url: URL,
+						type: DocumentTypes,
+						authorization: Any? = nil,
+						template: String) async throws -> [String: Any] {
 		let payload: [String: Any] = ["name": name,
 									  "url": url,
 									  "type": type,

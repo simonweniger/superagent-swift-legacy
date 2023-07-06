@@ -2,7 +2,7 @@
 //  superagent.h
 //  superagent
 //
-//  Created by vonweniger on 06.07.23.
+//  Created by Simon Weniger on 06.07.23.
 //
 
 #import <Foundation/Foundation.h>
