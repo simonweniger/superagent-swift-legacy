@@ -52,7 +52,7 @@ let superagent = SuperagentSDK(authToken: "YOUR_AUTH_TOKEN")
 
 ## Handling Prompts
 
-- **Getting a specific prompt**
+**Getting a specific prompt**
 
 ```swift
 do {
@@ -63,7 +63,7 @@ do {
 }
 ```
 
-- **Listing all prompts**
+**Listing all prompts**
 
 ```swift
 do {
@@ -73,7 +73,7 @@ do {
 	// handle error
 }
 ```
-- **Deleting a prompt**
+**Deleting a prompt**
 
 ```swift
 do {
@@ -84,7 +84,7 @@ do {
 }
 ```
 
-- **Updating a prompt**
+**Updating a prompt**
 
 ```swift
 do {
@@ -95,7 +95,7 @@ do {
 }
 ```
 
-- **Creating a prompt**
+**Creating a prompt**
 
 ```swift
 do {
@@ -108,7 +108,7 @@ do {
 
 ## Handling Documents
 
-- **Getting a specific document**
+**Getting a specific document**
 
 ```swift
 do {
@@ -118,7 +118,7 @@ do {
 	// handle error
 }
 ```
-- **Listing all documents**
+**Listing all documents**
 
 ```swift
 do {
@@ -128,7 +128,7 @@ do {
 	// handle error
 }
 ```
-- **Deleting a document**
+**Deleting a document**
 
 ```swift
 do {
@@ -139,7 +139,7 @@ do {
 }
 ```
 
-- **Creating a document**
+**Creating a document**
 
 ```swift
 do {
@@ -153,7 +153,7 @@ do {
 
 ## Handling Agents
 
-- **Getting a specific agent**
+**Getting a specific agent**
 
 ```swift
 do {
@@ -163,7 +163,7 @@ do {
 	// handle error
 }
 ```
-- **Listing all agents**
+**Listing all agents**
 
 ```swift
 do {
@@ -173,7 +173,7 @@ do {
 	// handle error
 }
 ```
-- **Deleting an agent**
+**Deleting an agent**
 
 ```swift
 do {
@@ -184,7 +184,7 @@ do {
 }
 ```
 
-- **Creating an agent**
+**Creating an agent**
 
 ```swift
 do {
@@ -196,7 +196,7 @@ do {
 }
 ```
 
-- **Creating an agent prediction**
+**Creating an agent prediction**
 
 ```swift
 do {
@@ -209,7 +209,7 @@ do {
 
 ## Handling AgentDocuments
 
-- **Getting all documents from an agent**
+**Getting all documents from an agent**
 
 ```swift
 do {
@@ -220,7 +220,7 @@ do {
 }
 ```
 
-- **Adding a Document to an Agent**
+**Adding a Document to an Agent**
 
 ```swift
 do {
@@ -231,7 +231,7 @@ do {
 }
 ```
 
-- **Delete a Document from an Agent**
+**Delete a Document from an Agent**
 
 ```swift
 do {
@@ -244,7 +244,7 @@ do {
 
 ## Handling Tools
 
-- **Getting a specific tool**
+**Getting a specific tool**
 
 ```swift
 do {
@@ -255,7 +255,7 @@ do {
 }
 ```
 
-- **Listing all tools**
+**Listing all tools**
 
 ```swift
 do {
@@ -265,7 +265,7 @@ do {
 	// handle error
 }
 ```
-- **Deleting a tool**
+**Deleting a tool**
 
 ```swift
 do {
@@ -276,7 +276,7 @@ do {
 }
 ```
 
-- **Creating a tool**
+**Creating a tool**
 
 ```swift
 do {
