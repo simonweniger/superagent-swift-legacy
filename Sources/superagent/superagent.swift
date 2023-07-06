@@ -4,6 +4,7 @@
 //
 //  Created by Simon Weniger on 06.07.23.
 //
+
 import Foundation
 
 enum HttpMethod: String {
@@ -12,7 +13,6 @@ enum HttpMethod: String {
 	case delete = "DELETE"
 	case patch = "PATCH"
 }
-
 enum SuperagentError: Error {
 	case invalidResponse
 	case requestFailed
@@ -20,7 +20,6 @@ enum SuperagentError: Error {
 	case failedToUpdatePrompt
 	case failedToCreatePrompt
 }
-
 enum DocumentTypes: String {
 	case text = "TEXT"
 	case pdf = "PDF"
@@ -28,12 +27,10 @@ enum DocumentTypes: String {
 	case csv = "CSV"
 	case url = "URL"
 }
-
 enum LLMTypes : String {
 	case openai = "OPENAI"
 	case react = "REACT"
 }
-
 enum ToolTypes: String {
 	case search = "SEARCH"
 	case wolframAlpha = "WOLFRAM_ALPHA"
@@ -42,7 +39,6 @@ enum ToolTypes: String {
 	case agent = "AGENT"
 	case openapi = "OPENAPI"
 }
-
 struct LLMModel {
 	enum Provider: String {
 		case openai
@@ -56,7 +52,7 @@ struct LLMModel {
 	let apiKey: String?
 	
 }
-
+@available(macOS 12.0, *)
 struct SuperagentSDK {
 	
 	var baseUrl: String
