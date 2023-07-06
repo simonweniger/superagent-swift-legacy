@@ -213,7 +213,7 @@ do {
 
 ```swift
 do {
-	let response = try await superagent.createAgent(id: "AGENT_ID", input: "Your Input", hasStreaming: true)
+	let response = try await superagent.createPrediction(id: "AGENT_ID", input: "Your Input", hasStreaming: true)
 	// handle response
 } catch {
 	// handle error

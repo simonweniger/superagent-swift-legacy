@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "superagent"
-  spec.version      = "0.0.6"
+  spec.version      = "0.0.7"
   spec.summary      = "Build, deploy, and manage LLM-powered agents on  platforms."
 
   # This description is used to generate tags and improve search results.
