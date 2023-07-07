@@ -30,6 +30,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 	private let urlString = "https://api.superagent.sh/api/v1"
 	private let apiKey: String
 	
+	
 	public init(apiKey: String) {
 		self.apiKey = apiKey
 	}
@@ -109,9 +110,9 @@ public struct SuperagentAPI: @unchecked Sendable {
 	}
 	
 	///Update a specific prompt
-	public func updatePrompt(prompt: Prompt) async throws -> [String: Any] {
-		let payload: [String: Any] = ["name": prompt.name, "input_variables": prompt.inputVariables, "template": prompt.template]
-		let data = try await request(method: .patch, endpoint: "/prompts/\(prompt.id)", data: payload)
+	public func updatePrompt(id: String, name: String, inputVariables: [String] = [], template: String) async throws -> [String: Any] {
+		let payload: [String: Any] = ["name": name, "input_variables": inputVariables, "template": template]
+		let data = try await request(method: .patch, endpoint: "/prompts/\(id)", data: payload)
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
@@ -119,8 +120,8 @@ public struct SuperagentAPI: @unchecked Sendable {
 	}
 	
 	///Create a new prompt
-	public func createPrompt(prompt: Prompt) async throws -> [String: Any] {
-		let payload: [String: Any] = ["name": prompt.name, "input_variables": prompt.inputVariables, "template": prompt.template]
+	public func createPrompt(name: String, inputVariables: [String] = [], template: String) async throws -> [String: Any] {
+			let payload: [String: Any] = ["name": name, "input_variables": inputVariables, "template": template]
 		let data = try await request(method: .post, endpoint: "/prompts", data: payload)
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
@@ -157,11 +158,14 @@ public struct SuperagentAPI: @unchecked Sendable {
 	}
 
 	///Create a new document
-	public func createDocument(document: Document) async throws -> [String: Any] {
-		let payload: [String: Any] = ["name": document.name!,
-									  "url": document.url,
-									  "type": document.type.rawValue,
-									  "authorization": document.authorization as Any]
+	func createDocument(name: String,
+							 url: String,
+							 type: String,
+							 authorization: Any? = nil) async throws -> [String: Any] {
+			let payload: [String: Any] = ["name": name,
+										  "url": url, // passing String instead of URL
+										  "type": type, // passing rawValue of enum
+										  "authorization": authorization as Any]
 		let data = try await request(method: .post, endpoint: "/documents", data: payload)
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
@@ -198,12 +202,18 @@ public struct SuperagentAPI: @unchecked Sendable {
 	}
 
 	///Create a new agent
-	public func createAgent(agent: Agent) async throws -> [String: Any] {
-		let payload: [String: Any] = ["name": agent.name,
-									  "llm": ["provider": agent.llm.provider.rawValue, "model": agent.llm.model, "api_key": agent.llm.apiKey ?? ""],
-									  "type": agent.type.rawValue,
-									  "hasMemory": agent.hasMemory,
-									  "promptId": agent.promptId ?? ""]
+	func createAgent(name: String,
+					 provider: String,
+					 model: String,
+					 api_key: String?,
+					 type: String,
+					 hasMemory: Bool,
+					 promptId: String? = nil) async throws -> [String: Any] {
+			let payload: [String: Any] = ["name": name,
+										  "llm": ["provider": provider, "model": model, "api_key": apiKey ],
+										  "type": type,
+										  "hasMemory": hasMemory,
+										  "promptId": promptId ?? ""]
 		let data = try await request(method: .post, endpoint: "/agents", data: payload)
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
