@@ -293,7 +293,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 	}
 
 	///Add a Document to an Agent
-	public func createAgentDocument(documentId: String, agentId: String) async throws -> AgentDocument {
+	public func addAgentDocument(documentId: String, agentId: String) async throws -> AgentDocument {
 		let payload: [String: Any] = ["documentId": documentId, "agentId": agentId]
 		let data = try await request(method: .post, endpoint: "/agent-documents", data: payload)
 		guard let outputData = data as? [String: Any] else {
@@ -332,7 +332,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 	}
 
 	///Add a Tool to an Agent
-	public func createAgentTool(toolId: String, agentId: String) async throws -> AgentTool {
+	public func addAgentTool(toolId: String, agentId: String) async throws -> AgentTool {
 		let payload: [String: Any] = ["toolId": toolId, "agentId": agentId]
 		let data = try await request(method: .post, endpoint: "/agents-tools", data: payload)
 		guard let outputData = data as? [String: Any] else {
