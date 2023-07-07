@@ -62,7 +62,7 @@ public struct SuperagentSDK {
 	var authToken: String
 	
 	// init auth and api url
-	init(authToken: String) {
+	public init(authToken: String) {
 		self.baseUrl = "https://api.superagent.sh/api/v1"
 		self.authToken = authToken
 	}
