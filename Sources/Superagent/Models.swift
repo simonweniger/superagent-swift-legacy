@@ -7,6 +7,87 @@
 
 import Foundation
 
+public struct Prompt {
+	public let id: String
+	public let name: String
+	public let template: String
+	public let inputVariables: [String]
+	
+	public init?(data: [String: Any]) {
+		guard let id = data["id"] as? String,
+			  let name = data["name"] as? String,
+			  let template = data["template"] as? String,
+			  let inputVariables = data["input_variables"] as? [String]
+		else {
+			return nil
+		}
+		
+		self.id = id
+		self.name = name
+		self.template = template
+		self.inputVariables = inputVariables
+	}
+}
+
+public struct Tool {
+	public let id: String
+	public let name: String
+	public let type: String
+	public let userId: String
+	
+	public init?(data: [String: Any]) {
+		guard let id = data["id"] as? String,
+			  let name = data["name"] as? String,
+			  let type = data["type"] as? String,
+			  let userId = data["userId"] as? String
+		else {
+			return nil
+		}
+		
+		self.id = id
+		self.name = name
+		self.type = type
+		self.userId = userId
+	}
+}
+
+public struct Document {
+	public let id: String
+	public let userId: String
+	public let user: Any
+	public let type: String
+	public let url: String
+	public let createdAt: String
+	public let updatedAt: String
+	public let index: Any
+	public let agent: Any
+	
+	public init?(data: [String: Any]) {
+		guard let id = data["id"] as? String,
+			  let userId = data["userId"] as? String,
+			  let user = data["user"],
+			  let type = data["type"] as? String,
+			  let url = data["url"] as? String,
+			  let createdAt = data["createdAt"] as? String,
+			  let updatedAt = data["updatedAt"] as? String,
+			  let index = data["index"],
+			  let agent = data["Agent"]
+		else {
+			return nil
+		}
+		
+		self.id = id
+		self.userId = userId
+		self.user = user
+		self.type = type
+		self.url = url
+		self.createdAt = createdAt
+		self.updatedAt = updatedAt
+		self.index = index
+		self.agent = agent
+	}
+}
+
 public struct Agent {
 	public let id: String
 	public let userId: String
@@ -39,5 +120,56 @@ public struct Agent {
 		self.isPublic = isPublic
 		self.createdAt = createdAt
 		self.updatedAt = updatedAt
+	}
+}
+
+
+public struct AgentTool {
+	public let id: String
+	public let agent: Any
+	public let agentId: String
+	public let tool: Any
+	public let toolId: String
+	
+	public init?(data: [String: Any]) {
+		guard let id = data["id"] as? String,
+			  let agent = data["agent"],
+			  let agentId = data["agentId"] as? String,
+			  let tool = data["tool"],
+			  let toolId = data["toolId"] as? String
+		else {
+			return nil
+		}
+		
+		self.id = id
+		self.agent = agent
+		self.agentId = agentId
+		self.tool = tool
+		self.toolId = toolId
+	}
+}
+
+public struct AgentDocument {
+	public let id: String
+	public let agent: Any
+	public let agentId: String
+	public let document: Any
+	public let documentId: String
+	
+	public init?(data: [String: Any]) {
+		guard let id = data["id"] as? String,
+			  let agent = data["agent"],
+			  let agentId = data["agentId"] as? String,
+			  let document = data["document"],
+			  let documentId = data["documentId"] as? String
+		else {
+			return nil
+		}
+		
+		self.id = id
+		self.agent = agent
+		self.agentId = agentId
+		self.document = document
+		self.documentId = documentId
 	}
 }
