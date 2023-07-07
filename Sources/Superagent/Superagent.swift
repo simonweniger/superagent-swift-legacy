@@ -158,7 +158,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 	}
 
 	///Create a new document
-	func createDocument(name: String,
+	public func createDocument(name: String,
 							 url: String,
 							 type: String,
 							 authorization: Any? = nil) async throws -> [String: Any] {
@@ -202,7 +202,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 	}
 
 	///Create a new agent
-	func createAgent(name: String,
+	public func createAgent(name: String,
 					 provider: String,
 					 model: String,
 					 api_key: String?,
