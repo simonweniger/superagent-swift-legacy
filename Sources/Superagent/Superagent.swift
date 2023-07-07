@@ -275,20 +275,27 @@ public struct SuperagentAPI: @unchecked Sendable {
 	
 	//Agent Documents
 	///Get all Documents from an Agent
-	public func getAgentDocuments() async throws -> AgentDocument {
+	public func getAgentDocuments() async throws -> [AgentDocument] {
 		let data = try await request(method: .get, endpoint: "/agent-documents")
-		guard let outputData = data as? [String: Any] else {
+		guard let outputData = data as? [[String: Any]] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
 		
-		let agentDocument = AgentDocument(data: outputData)!
-		return agentDocument
+		var agentDocuments: [AgentDocument] = []
+			for agentDocumentData in outputData {
+				do {
+					let agentDocument = AgentDocument(data: agentDocumentData)
+					agentDocuments.append(agentDocument!)
+				}
+			}
+			
+		return agentDocuments
 	}
 
 	///Add a Document to an Agent
 	public func createAgentDocument(documentId: String, agentId: String) async throws -> AgentDocument {
 		let payload: [String: Any] = ["documentId": documentId, "agentId": agentId]
-		let data = try await request(method: .post, endpoint: "/agents", data: payload)
+		let data = try await request(method: .post, endpoint: "/agent-documents", data: payload)
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
@@ -299,6 +306,45 @@ public struct SuperagentAPI: @unchecked Sendable {
 	///Delete a Document from an Agent
 	public func deleteAgentDocument(agentDocumentId: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/agent-documents/\(agentDocumentId)")
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToCreatePrompt
+		}
+		return outputData
+	}
+	
+	//Agent Tools
+	///Get all Tools from an Agent
+	public func getAgentTools() async throws -> [AgentTool] {
+		let data = try await request(method: .get, endpoint: "/agent-tools")
+		guard let outputData = data as? [[String: Any]] else {
+			throw SuperagentError.failedToCreatePrompt
+		}
+		
+		var agentTools: [AgentTool] = []
+			for agentToolData in outputData {
+				do {
+					let agentTool = AgentTool(data: agentToolData)
+					agentTools.append(agentTool!)
+				}
+			}
+			
+		return agentTools
+	}
+
+	///Add a Tool to an Agent
+	public func createAgentTool(toolId: String, agentId: String) async throws -> AgentTool {
+		let payload: [String: Any] = ["toolId": toolId, "agentId": agentId]
+		let data = try await request(method: .post, endpoint: "/agents-tools", data: payload)
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToCreatePrompt
+		}
+		let agentTool = AgentTool(data: outputData)!
+		return agentTool
+	}
+
+	///Delete a Tool from an Agent
+	public func deleteAgentTool(agentToolId: String) async throws -> [String: Any] {
+		let data = try await request(method: .delete, endpoint: "/agent-tools/\(agentToolId)")
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
