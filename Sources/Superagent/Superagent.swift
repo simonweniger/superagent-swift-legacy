@@ -296,8 +296,8 @@ public struct SuperagentAPI: @unchecked Sendable {
 	}
 
 	///Create a new tool
-	public func createTool(name: String, type: Tool.ToolTypes, metadata: Any? = nil) async throws -> [String: Any] {
-		var payload: [String: Any] = ["name": name, "type": type.rawValue]
+	public func createTool(name: String, type: String, metadata: Any? = nil) async throws -> [String: Any] {
+		var payload: [String: Any] = ["name": name, "type": type]
 		if let metadata = metadata {
 			payload["metadata"] = metadata
 		}
