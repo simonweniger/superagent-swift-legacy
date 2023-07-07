@@ -208,7 +208,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 					 api_key: String?,
 					 type: String,
 					 hasMemory: Bool,
-					 promptId: String? = nil) async throws -> [String: Any] {
+					 promptId: String? = nil) async throws -> Agent {
 			let payload: [String: Any] = ["name": name,
 										  "llm": ["provider": provider, "model": model, "api_key": apiKey ],
 										  "type": type,
@@ -218,7 +218,9 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
-		return outputData
+		
+		let agent = Agent(data: outputData)!
+		return agent
 	}
 
 	///Create a new prediction
