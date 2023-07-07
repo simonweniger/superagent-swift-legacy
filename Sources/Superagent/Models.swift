@@ -8,17 +8,17 @@
 import Foundation
 
 public struct Agent {
-	let id: String
-	let userId: String
-	let name: String
-	let type: String
-	let hasMemory: Bool
-	let isPublic: Bool
-	let createdAt: String
-	let updatedAt: String
+	public let id: String
+	public let userId: String
+	public let name: String
+	public let type: String
+	public let hasMemory: Bool
+	public let isPublic: Bool
+	public let createdAt: String
+	public let updatedAt: String
 	
 	
-	init?(data: [String: Any]) {
+	public init?(data: [String: Any]) {
 		guard let id = data["id"] as? String,
 			  let userId = data["userId"] as? String,
 			  let name = data["name"] as? String,
