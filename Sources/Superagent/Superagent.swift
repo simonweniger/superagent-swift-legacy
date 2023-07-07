@@ -260,15 +260,17 @@ public struct SuperagentAPI: @unchecked Sendable {
 	///Create a new prediction
 	public func createPrediction(id: String,
 						  input: String,
-						  hasStreaming: Bool) async throws -> [String: Any] {
+						  hasStreaming: Bool) async throws -> String {
 		let payload: [String: Any] = ["name": input,
 									  "has_Streaming": hasStreaming]
 		let data = try await request(method: .post, endpoint: "/agents\(id)", data: payload)
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
+		
+		let response = outputData["data"] as! String
 	
-		return outputData
+		return response
 	}
 	
 	//Agent Documents
