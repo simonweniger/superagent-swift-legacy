@@ -273,6 +273,8 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let agent = Agent(data: outputData) else {
 			throw SuperagentError.requestFailed
 		}
+		
+		print("Create agent result \(agent)")
 		return agent
 	}
 
