@@ -88,7 +88,10 @@ public struct SuperagentAPI: @unchecked Sendable {
 		   guard let outputData = data as? [String: Any] else {
 			   throw SuperagentError.failedToRetrievePrompt
 		   }
-		let prompt = Prompt(data: outputData)!
+		
+		guard let prompt = Prompt(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return prompt
 	   }
 	
@@ -126,7 +129,10 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
-		let prompt = Prompt(data: outputData)!
+		
+		guard let prompt = Prompt(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return prompt
 	}
 	
@@ -137,7 +143,10 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
-		let prompt = Prompt(data: outputData)!
+		
+		guard let prompt = Prompt(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return prompt
 	}
 	
@@ -148,7 +157,10 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		let document = Document(data: outputData)!
+		
+		guard let document = Document(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return document
 	}
 
@@ -192,7 +204,10 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
-		let document = Document(data: outputData)!
+		
+		guard let document = Document(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return document
 	}
 	
@@ -203,7 +218,9 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		let agent = Agent(data: outputData)!
+		guard let agent = Agent(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return agent
 	}
 
@@ -253,7 +270,9 @@ public struct SuperagentAPI: @unchecked Sendable {
 			throw SuperagentError.failedToCreatePrompt
 		}
 		
-		let agent = Agent(data: outputData)!
+		guard let agent = Agent(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return agent
 	}
 
@@ -299,7 +318,9 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
-		let agentDocument = AgentDocument(data: outputData)!
+		guard let agentDocument = AgentDocument(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return agentDocument
 	}
 
@@ -338,7 +359,10 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
-		let agentTool = AgentTool(data: outputData)!
+		
+		guard let agentTool = AgentTool(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return agentTool
 	}
 
@@ -358,7 +382,10 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		let tool = Tool(data: outputData)!
+		
+		guard let tool = Tool(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return tool
 	}
 
@@ -398,7 +425,10 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
 		}
-		let tool = Tool(data: outputData)!
+		
+		guard let tool = Tool(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
 		return tool
 	}
 }
