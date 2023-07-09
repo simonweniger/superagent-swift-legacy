@@ -129,7 +129,7 @@ class SuperagentSdkTests: XCTestCase {
 				let name = "sample_name"
 				let url = URL(string: "https://www.example.com")!
 				let type = "PDF"
-				let result = try await (self.superagentSDK?.createDocument(name: name, url: url, type: type,authorization:nil, template: ""))
+				let result = try await (self.superagentSDK?.createDocument(name: name, url: url, type: type,authorization:nil))
 				XCTAssertNotNil(result, "Create document failed")
 				expectation.fulfill()
 			} catch {
@@ -179,7 +179,7 @@ class SuperagentSdkTests: XCTestCase {
 		
 		Task{
 			do{
-				let result = try await (self.superagentSDK?.listAgents(id: ""))
+				let result = try await (self.superagentSDK?.listAgents())
 				XCTAssertNotNil(result, "List Agents failed")
 				expectation.fulfill()
 			} catch{
@@ -249,7 +249,7 @@ class SuperagentSdkTests: XCTestCase {
 		
 		Task{
 			do{
-				let result = try await (self.superagentSDK?.listTools(id: ""))
+				let result = try await (self.superagentSDK?.listTools())
 				XCTAssertNotNil(result, "List Tools failed")
 				expectation.fulfill()
 			} catch{

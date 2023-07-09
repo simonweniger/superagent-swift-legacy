@@ -305,7 +305,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 		}
 		
 		guard let agent = Agent(data: outputData) else {
-			throw SuperagentError.requestFailed
+			throw "Could not return Agent\(outputData)"
 		}
 		
 		print("Create agent result \(agent)")
