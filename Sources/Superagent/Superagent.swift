@@ -83,263 +83,199 @@ public struct SuperagentAPI: @unchecked Sendable {
 	
 	//Prompts
 	///Retuns a specific prompt
-	public func getPrompt(id: String, completion: @escaping (Result<Prompt, Error>) -> Void) {
-
-		Task {
-			do {
-				let data = try await request(method: .get, endpoint: "/prompts/\(id)")
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				
-				guard let prompt = Prompt(data: outputData) else {
-					throw SuperagentError.requestFailed
-				}
-				
-				completion(.success(prompt))
-			} catch {
-				completion(.failure(error))
-			}
+	public func getPrompt(id: String) async throws -> Prompt {
+		
+		let data = try await request(method: .get, endpoint: "/prompts/\(id)")
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		guard let prompt = Prompt(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
+		
+		return prompt
 	}
 	
 	///Delete prompt
-	public func deletePrompt(id: String, completion: @escaping (Result<[String: Any], Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .delete, endpoint: "/prompts/\(id)")
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				completion(.success(outputData))
-			} catch {
-				completion(.failure(error))
-			}
+	public func deletePrompt(id: String) async throws -> [String: Any] {
+		let data = try await request(method: .delete, endpoint: "/prompts/\(id)")
+
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+
+		return outputData
 	}
 	
 	///Lists all prompts
-	public func listPrompts(completion: @escaping (Result<[Prompt], Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .get, endpoint: "/prompts")
-				guard let outputData = data as? [[String: Any]] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				
-				let prompts = outputData.compactMap { promptData in
-					return Prompt(data: promptData)
-				}
-				
-				completion(.success(prompts))
-			} catch {
-				completion(.failure(error))
-			}
+	public func listPrompts() async throws -> [Prompt] {
+		let data = try await request(method: .get, endpoint: "/prompts")
+		
+		guard let outputData = data as? [[String: Any]] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		let prompts = outputData.compactMap { promptData in
+			return Prompt(data: promptData)
+		}
+		
+		return prompts
 	}
 	
 	///Update a specific prompt
 	public func updatePrompt(id: String,
 							 name: String,
 							 inputVariables: [String] = [],
-							 template: String,
-							 completion: @escaping (Result<Prompt, Error>) -> Void) {
+							 template: String) async throws -> Prompt {
 		let payload: [String: Any] = [
 			"name": name,
 			"input_variables": inputVariables,
 			"template": template
 		]
 
-		Task {
-			do {
-				let data = try await request(method: .patch, endpoint: "/prompts/\(id)", data: payload)
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				guard let prompt = Prompt(data: outputData) else {
-					throw SuperagentError.requestFailed
-				}
-				
-				completion(.success(prompt))
-			} catch {
-				completion(.failure(error))
-			}
+		let data = try await request(method: .patch, endpoint: "/prompts/\(id)", data: payload)
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToCreatePrompt
 		}
+
+		guard let prompt = Prompt(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
+
+		return prompt
 	}
 	
 	///Create a new prompt
 	public func createPrompt(name: String,
 							 inputVariables: [String] = [],
-							 template: String,
-							 completion: @escaping (Result<Prompt, Error>) -> Void) {
+							 template: String) async throws -> Prompt {
 		let payload: [String: Any] = [
 			"name": name,
 			"input_variables": inputVariables,
 			"template": template
 		]
+
+		let data = try await request(method: .post, endpoint: "/prompts", data: payload)
 		
-		Task {
-			do {
-				let data = try await request(method: .post, endpoint: "/prompts", data: payload)
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				guard let prompt = Prompt(data: outputData) else {
-					throw SuperagentError.requestFailed
-				}
-				
-				completion(.success(prompt))
-			} catch {
-				completion(.failure(error))
-			}
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToCreatePrompt
 		}
+		
+		guard let prompt = Prompt(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
+		
+		return prompt
 	}
 	
 	//Documents
 	///Returns a specific document
-	public func getDocument(id: String, completion: @escaping (Result<Document, Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .get, endpoint: "/documents/\(id)")
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				
-				guard let document = Document(data: outputData) else {
-					throw SuperagentError.requestFailed
-				}
-				
-				completion(.success(document))
-			} catch {
-				completion(.failure(error))
-			}
+	public func getDocument(id: String) async throws -> Document {
+		let data = try await request(method: .get, endpoint: "/documents/\(id)")
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		guard let document = Document(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
+		
+		return document
 	}
 
 	///Delete document
-	public func deleteDocument(id: String, completion: @escaping (Result<[String: Any], Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .delete, endpoint: "/documents/\(id)")
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				completion(.success(outputData))
-			} catch {
-				completion(.failure(error))
-			}
+	public func deleteDocument(id: String) async throws -> [String: Any] {
+		let data = try await request(method: .delete, endpoint: "/documents/\(id)")
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		return outputData
 	}
 
 	///Lists all documents
-	public func listDocuments(completion: @escaping (Result<[Document], Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .get, endpoint: "/documents")
-				guard let outputData = data as? [[String: Any]] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				
-				let documents = try outputData.compactMap { documentData -> Document? in
-					guard let document = Document(data: documentData) else {
-						throw SuperagentError.requestFailed
-					}
-					return document
-				}
-				
-				completion(.success(documents))
-			} catch {
-				completion(.failure(error))
-			}
+	public func listDocuments() async throws -> [Document] {
+		let data = try await request(method: .get, endpoint: "/documents")
+		guard let outputData = data as? [[String: Any]] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		let documents = try outputData.compactMap { documentData -> Document? in
+			guard let document = Document(data: documentData) else {
+				throw SuperagentError.requestFailed
+			}
+			return document
+		}
+		
+		return documents
 	}
 
 	///Create a new document
 	public func createDocument(name: String,
 							   url: URL,
 							   type: String,
-							   authorization: Any? = nil,
-							   completion: @escaping (Result<Document, Error>) -> Void) {
-
+							   authorization: Any? = nil) async throws -> Document {
+		
 		let payload: [String: Any] = [
 			"name": name,
 			"url": url.absoluteString,
 			"type": type,
 			"authorization": authorization as Any
 		]
-
-		Task {
-			do {
-				let data = try await request(method: .post, endpoint: "/documents", data: payload)
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				guard let document = Document(data: outputData) else {
-					throw SuperagentError.requestFailed
-				}
-				
-				completion(.success(document))
-			} catch {
-				completion(.failure(error))
-			}
+		
+		let data = try await request(method: .post, endpoint: "/documents", data: payload)
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToCreatePrompt
 		}
+		
+		guard let document = Document(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
+		
+		return document
 	}
 	
 	//Agents
 	///Returns a specific agent
-	public func getAgent(id: String, completion: @escaping (Result<Agent, Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .get, endpoint: "/agents/\(id)")
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				
-				guard let agent = Agent(data: outputData) else {
-					throw SuperagentError.requestFailed
-				}
-				
-				completion(.success(agent))
-			} catch {
-				completion(.failure(error))
-			}
+	public func getAgent(id: String) async throws -> Agent {
+		let data = try await request(method: .get, endpoint: "/agents/\(id)")
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		guard let agent = Agent(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
+		
+		return agent
 	}
 
 	///Delete agent
-	public func deleteAgent(id: String, completion: @escaping (Result<[String: Any], Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .delete, endpoint: "/agents/\(id)")
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				
-				completion(.success(outputData))
-			} catch {
-				completion(.failure(error))
-			}
+	public func deleteAgent(id: String) async throws -> [String: Any] {
+		let data = try await request(method: .delete, endpoint: "/agents/\(id)")
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		return outputData
 	}
 
 	///Lists all agents
-	public func listAgents(completion: @escaping (Result<[Agent], Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .get, endpoint: "/agents")
-				guard let outputData = data as? [[String: Any]] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				
-				let agents = outputData.compactMap { Agent(data: $0) }
-				completion(.success(agents))
-			} catch {
-				completion(.failure(error))
-			}
+	public func listAgents() async throws -> [Agent] {
+		let data = try await request(method: .get, endpoint: "/agents")
+		
+		guard let outputData = data as? [[String: Any]] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		let agents = outputData.compactMap { Agent(data: $0) }
+		return agents
 	}
 
 	///Create a new agent
@@ -349,9 +285,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 							apiKey: String?,
 							type: String,
 							hasMemory: Bool,
-							promptId: String? = nil,
-							completion: @escaping (Result<Agent, Error>) -> Void) {
-
+							promptId: String? = nil) async throws -> Agent {
 		let payload: [String: Any] = [
 			"name": name,
 			"llm": [
@@ -364,250 +298,181 @@ public struct SuperagentAPI: @unchecked Sendable {
 			"promptId": promptId ?? ""
 		]
 
-		Task {
-			do {
-				let data = try await request(method: .post, endpoint: "/agents", data: payload)
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				guard let agent = Agent(data: outputData) else {
-					throw SuperagentError.requestFailed
-				}
-				
-				print("Create agent result \(agent)")
-				completion(.success(agent))
-			} catch {
-				completion(.failure(error))
-			}
+		let data = try await request(method: .post, endpoint: "/agents", data: payload)
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToCreatePrompt
 		}
+		
+		guard let agent = Agent(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
+		
+		print("Create agent result \(agent)")
+		return agent
 	}
 
 	///Create a new prediction
-	public func createPrediction(agentId: String,
-								 input: String,
-								 hasStreaming: Bool,
-								 completion: @escaping (Result<String, Error>) -> Void) {
-
+	public func createPrediction(agentId: String, input: String, hasStreaming: Bool) async throws -> String {
 		let payload: [String: Any] = [
 			"name": input,
 			"has_Streaming": hasStreaming
 		]
 
-		Task {
-			do {
-				let data = try await request(method: .post, endpoint: "/agents\(agentId)", data: payload)
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				let response = outputData["data"] as! String
-				completion(.success(response))
-			} catch {
-				completion(.failure(error))
-			}
+		let data = try await request(method: .post, endpoint: "/agents\(agentId)", data: payload)
+		
+		guard let outputData = data as? [String: Any],
+			  let response = outputData["data"] as? String else {
+			throw SuperagentError.failedToCreatePrompt
 		}
+		
+		return response
 	}
 	
 	//Agent Documents
 	///Get all Documents from an Agent
-	public func getAgentDocuments(completion: @escaping (Result<[AgentDocument], Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .get, endpoint: "/agent-documents")
-				guard let outputData = data as? [[String: Any]] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				var agentDocuments: [AgentDocument] = []
-				for agentDocumentData in outputData {
-					if let agentDocument = AgentDocument(data: agentDocumentData) {
-						agentDocuments.append(agentDocument)
-					}
-				}
-				
-				completion(.success(agentDocuments))
-			} catch {
-				completion(.failure(error))
+	public func getAgentDocuments() async throws -> [AgentDocument] {
+		let data = try await request(method: .get, endpoint: "/agent-documents")
+		
+		guard let outputData = data as? [[String: Any]] else {
+			throw SuperagentError.failedToCreatePrompt
+		}
+		
+		var agentDocuments: [AgentDocument] = []
+		for agentDocumentData in outputData {
+			if let agentDocument = AgentDocument(data: agentDocumentData) {
+				agentDocuments.append(agentDocument)
 			}
 		}
+		
+		return agentDocuments
 	}
 
 	///Add a Document to an Agent
-	public func addAgentDocument(documentId: String, agentId: String, completion: @escaping (Result<AgentDocument, Error>) -> Void) {
+	public func addAgentDocument(documentId: String, agentId: String) async throws -> AgentDocument {
 		let payload: [String: Any] = ["documentId": documentId, "agentId": agentId]
-		
-		Task {
-			do {
-				let data = try await request(method: .post, endpoint: "/agent-documents", data: payload)
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				guard let agentDocument = AgentDocument(data: outputData) else {
-					throw SuperagentError.requestFailed
-				}
-				
-				completion(.success(agentDocument))
-			} catch {
-				completion(.failure(error))
-			}
+
+		let data = try await request(method: .post, endpoint: "/agent-documents", data: payload)
+
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToCreatePrompt
 		}
+
+		guard let agentDocument = AgentDocument(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
+
+		return agentDocument
 	}
 
 	///Delete a Document from an Agent
-	public func deleteAgentDocument(agentDocumentId: String, completion: @escaping (Result<[String: Any], Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .delete, endpoint: "/agent-documents/\(agentDocumentId)")
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				completion(.success(outputData))
-			} catch {
-				completion(.failure(error))
-			}
+	public func deleteAgentDocument(agentDocumentId: String) async throws -> [String: Any] {
+		let data = try await request(method: .delete, endpoint: "/agent-documents/\(agentDocumentId)")
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToCreatePrompt
 		}
+
+		return outputData
 	}
 	
 	//Agent Tools
 	///Get all Tools from an Agent
-	public func getAgentTools(completion: @escaping (Result<[AgentTool], Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .get, endpoint: "/agent-tools")
-				guard let outputData = data as? [[String: Any]] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				var agentTools: [AgentTool] = []
-				for agentToolData in outputData {
-					if let agentTool = AgentTool(data: agentToolData) {
-						agentTools.append(agentTool)
-					}
-				}
-				
-				completion(.success(agentTools))
-			} catch {
-				completion(.failure(error))
+	public func getAgentTools() async throws -> [AgentTool] {
+		let data = try await request(method: .get, endpoint: "/agent-tools")
+		guard let outputData = data as? [[String: Any]] else {
+			throw SuperagentError.failedToCreatePrompt
+		}
+		
+		var agentTools: [AgentTool] = []
+		for agentToolData in outputData {
+			if let agentTool = AgentTool(data: agentToolData) {
+				agentTools.append(agentTool)
 			}
 		}
+		
+		return agentTools
 	}
 
 	///Add a Tool to an Agent
-	public func addAgentTool(toolId: String, agentId: String, completion: @escaping (Result<AgentTool, Error>) -> Void) {
+	public func addAgentTool(toolId: String, agentId: String) async throws -> AgentTool {
 		let payload: [String: Any] = ["agentId": agentId, "toolId": toolId]
 		
-		Task {
-			do {
-				let data = try await request(method: .post, endpoint: "/agents-tools", data: payload)
-				guard let outputData = data as? AgentTool else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				completion(.success(outputData))
-			} catch {
-				completion(.failure(error))
-			}
+		let data = try await request(method: .post, endpoint: "/agents-tools", data: payload)
+		
+		guard let outputData = data as? AgentTool else {
+			throw SuperagentError.failedToCreatePrompt
 		}
+		return outputData
 	}
 
 	///Delete a Tool from an Agent
-	public func deleteAgentTool(agentToolId: String, completion: @escaping (Result<[String: Any], Error>) -> Void) {
+	public func deleteAgentTool(agentToolId: String) async throws -> [String: Any] {
 
-		Task {
-			do {
-				let data = try await request(method: .delete, endpoint: "/agent-tools/\(agentToolId)")
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				completion(.success(outputData))
-			} catch {
-				completion(.failure(error))
-			}
+		let data = try await request(method: .delete, endpoint: "/agent-tools/\(agentToolId)")
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToCreatePrompt
 		}
+
+		return outputData
 	}
 
 	//Tools
 	///Returns a specific tool
-	public func getTool(id: String, completion: @escaping (Result<Tool, Error>) -> Void) {
-
-		Task {
-			do {
-				let data = try await request(method: .get, endpoint: "/tools/\(id)")
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				
-				guard let tool = Tool(data: outputData) else {
-					throw SuperagentError.requestFailed
-				}
-				
-				completion(.success(tool))
-			} catch {
-				completion(.failure(error))
-			}
+	public func getTool(id: String) async throws -> Tool {
+		let data = try await request(method: .get, endpoint: "/tools/\(id)")
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		guard let tool = Tool(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
+		
+		return tool
 	}
 
-	///Delete tool
-	public func deleteTool(id: String, completion: @escaping (Result<[String: Any], Error>) -> Void) {
 
-		Task {
-			do {
-				let data = try await request(method: .delete, endpoint: "/tools/\(id)")
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				completion(.success(outputData))
-			} catch {
-				completion(.failure(error))
-			}
+	///Delete tool
+	public func deleteTool(id: String) async throws -> [String: Any] {
+		let data = try await request(method: .delete, endpoint: "/tools/\(id)")
+		
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		return outputData
 	}
 
 	///Lists all tools
-	public func listTools(completion: @escaping (Result<[Tool], Error>) -> Void) {
-		Task {
-			do {
-				let data = try await request(method: .get, endpoint: "/tools")
-			 
-				guard let outputData = data as? [[String: Any]] else {
-					throw SuperagentError.failedToRetrievePrompt
-				}
-				
-				let tools = outputData.compactMap { Tool(data: $0) }
-				
-				completion(.success(tools))
-			} catch {
-				completion(.failure(error))
-			}
+	public func listTools() async throws -> [Tool] {
+		let data = try await request(method: .get, endpoint: "/tools")
+		
+		guard let outputData = data as? [[String: Any]] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		let tools = outputData.compactMap { Tool(data: $0) }
+		
+		return tools
 	}
 
 	///Create a new tool
-	public func createTool(name: String,
-						   type: String,
-						   metadata: Any,
-						   completion: @escaping (Result<Tool, Error>) -> Void) {
+	public func createTool(name: String, type: String, metadata: Any) async throws -> Tool {
 		let payload: [String: Any] = ["name": name, "type": type, "metadata": metadata]
 		
-		Task {
-			do {
-				let data = try await request(method: .post, endpoint: "/tools", data: payload)
-				guard let outputData = data as? [String: Any] else {
-					throw SuperagentError.failedToCreatePrompt
-				}
-				
-				guard let tool = Tool(data: outputData) else {
-					throw SuperagentError.requestFailed
-				}
-				
-				completion(.success(tool))
-			} catch {
-				completion(.failure(error))
-			}
+		let data = try await request(method: .post, endpoint: "/tools", data: payload)
+			
+		guard let outputData = data as? [String: Any] else {
+			throw SuperagentError.failedToCreatePrompt
 		}
+			
+		guard let tool = Tool(data: outputData) else {
+			throw SuperagentError.requestFailed
+		}
+			
+		return tool
 	}
 }
