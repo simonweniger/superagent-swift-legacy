@@ -2,13 +2,16 @@
 //  File.swift
 //  
 //
-//  Created by vonweniger on 07.07.23.
+//  Created by Simon Weniger on 07.07.23.
 //
 
 import Foundation
 
-
-
+struct APIResponse<T: Decodable>: Decodable {
+	let success: Bool
+	let data: T
+}
+	
 public struct Prompt {
 	public let id: String
 	public let name: String
@@ -90,6 +93,27 @@ public struct Document {
 	}
 }
 
+public struct LLM: Codable {
+	public let apiKey: String
+	public let model: String
+	public let provider: String
+
+	enum CodingKeys: String, CodingKey {
+		case model = "model"
+		case apiKey = "api_key"
+		case provider = "provider"
+	}
+}
+
+public struct User: Codable {
+	public let agent, agentTrace, apiToken, document: String?
+	public let prompt, tool: String?
+	public let createdAt: String
+	public let deletedAt: String?
+	public let email, id, name, password: String
+	public let profile, updatedAt: String?
+}
+
 public struct Agent {
 	public let id: String
 	public let userId: String
@@ -124,7 +148,6 @@ public struct Agent {
 		self.updatedAt = updatedAt
 	}
 }
-
 
 public struct AgentTool {
 	public let id: String
