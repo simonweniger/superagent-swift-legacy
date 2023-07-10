@@ -35,7 +35,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 		self.apiKey = apiKey
 	}
 	
-	private func convertJson(data: [String: Any]) async throws -> [String: String]{
+	private func convertJson(data: [String: Any]) async throws -> Data{
 		let decoder = JSONDecoder()
 		decoder.keyDecodingStrategy = .convertFromSnakeCase
 		guard let jsonData = try? JSONSerialization.data(withJSONObject: data, options: []) else {
@@ -43,6 +43,8 @@ public struct SuperagentAPI: @unchecked Sendable {
 				DecodingError.Context(codingPath: [], debugDescription: "Failed to convert data to JSON.")
 			)
 		}
+		
+		return jsonData
 	}
 	
 	//createRequest
@@ -285,7 +287,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
-		let agents = try outputData.compactMap { try AgentData(from: $0) }
+		let agents = try outputData.compactMap { try AgentData(from: $0 as! Decoder) }
 		return agents
 	}
 
@@ -315,7 +317,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 				throw SuperagentError.failedToRetrievePrompt
 			}
 
-		let agent = try AgentData(from: outputData)
+		let agent = try AgentData(from: outputData as! Decoder)
 		
 		print("Create agent result \(agent)")
 		return agent
