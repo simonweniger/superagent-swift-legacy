@@ -35,6 +35,12 @@ public struct SuperagentAPI: @unchecked Sendable {
 		self.apiKey = apiKey
 	}
 	
+	private let jsonDecoder: JSONDecoder = {
+		let jsonDecoder = JSONDecoder()
+		jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+		return jsonDecoder
+	}()
+	
 	//createRequest
 	private func createRequest(method: HttpMethod, endpoint: String, data: [String: Any]? = nil) throws -> URLRequest {
 		guard let url = URL(string: "\(self.urlString)\(endpoint)") else {
@@ -66,10 +72,11 @@ public struct SuperagentAPI: @unchecked Sendable {
 		return request
 	}
 	
+	
 	// defined Request
 	private func request(method: HttpMethod, endpoint: String, data: [String: Any]? = nil) async throws -> Any  {
 		let request = try createRequest(method: method, endpoint: endpoint, data: data)
-		let (data, response) = try await URLSession.shared.data(for: request)
+		var (data, response) = try await URLSession.shared.data(for: request)
 	  
 		if let httpResponse = response as? HTTPURLResponse, 200..<300 ~= httpResponse.statusCode {
 		  if let output = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
@@ -241,16 +248,14 @@ public struct SuperagentAPI: @unchecked Sendable {
 	
 	//Agents
 	///Returns a specific agent
-	public func getAgent(id: String) async throws -> Agent {
+	public func getAgent(id: String) async throws -> AgentData {
 		let data = try await request(method: .get, endpoint: "/agents/\(id)")
 		
 		guard let outputData = data as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
-		}
-		
-		guard let agent = Agent(data: outputData) else {
-			throw SuperagentError.requestFailed
-		}
+				throw SuperagentError.failedToRetrievePrompt
+			}
+
+		let agent = try AgentData(from: outputData)
 		
 		return agent
 	}
@@ -267,14 +272,14 @@ public struct SuperagentAPI: @unchecked Sendable {
 	}
 
 	///Lists all agents
-	public func listAgents() async throws -> [Agent] {
+	public func listAgents() async throws -> [AgentData] {
 		let data = try await request(method: .get, endpoint: "/agents")
 		
 		guard let outputData = data as? [[String: Any]] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
-		let agents = outputData.compactMap { Agent(data: $0) }
+		let agents = try outputData.compactMap { try AgentData(from: $0) }
 		return agents
 	}
 
@@ -285,7 +290,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 							apiKey: String?,
 							type: String,
 							hasMemory: Bool,
-							promptId: String? = nil) async throws -> Agent {
+							promptId: String? = nil) async throws -> AgentData {
 		let payload: [String: Any] = [
 			"name": name,
 			"llm": [
@@ -301,12 +306,10 @@ public struct SuperagentAPI: @unchecked Sendable {
 		let data = try await request(method: .post, endpoint: "/agents", data: payload)
 		
 		guard let outputData = data as? [String: Any] else {
-			throw SuperagentError.failedToCreatePrompt
-		}
-		
-		guard let agent = Agent(data: outputData) else {
-			throw "Could not return Agent\(outputData)"
-		}
+				throw SuperagentError.failedToRetrievePrompt
+			}
+
+		let agent = try AgentData(from: outputData)
 		
 		print("Create agent result \(agent)")
 		return agent

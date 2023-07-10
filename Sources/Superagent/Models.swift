@@ -88,39 +88,58 @@ public struct Document {
 	}
 }
 
-public struct Agent {
-	public let id: String
-	public let userId: String
-	public let name: String
-	public let type: String
-	public let hasMemory: Bool
-	public let isPublic: Bool
-	public let createdAt: String
-	public let updatedAt: String
+struct Response: Codable {
+	let data: AgentData
+	let success: Int
+}
+
+public struct AgentData: Codable {
+	let agentDocument, agentMemory, agentTool, agentTrace: String?
+	let createdAt, document, documentId: String?
+	let hasMemory: Int
+	let id: String
+	let isPublic: Int
+	let llm: LLM
+	let name, prompt: String?
+	let promptId, tool, toolId: String?
+	let type: String
+	let updatedAt: String
+	let user: User
+	let userId: String
 	
-	
-	public init?(data: [String: Any]) {
-		guard let id = data["id"] as? String,
-			  let userId = data["userId"] as? String,
-			  let name = data["name"] as? String,
-			  let type = data["type"] as? String,
-			  let hasMemory = data["hasMemory"] as? Bool,
-			  let isPublic = data["isPublic"] as? Bool,
-			  let createdAt = data["createdAt"] as? String,
-			  let updatedAt = data["updatedAr"] as? String
-		else {
-			return nil
+
+	init(from data: [String: Any]) throws {
+			let decoder = JSONDecoder()
+			decoder.keyDecodingStrategy = .convertFromSnakeCase
+			guard let jsonData = try? JSONSerialization.data(withJSONObject: data, options: []) else {
+				throw DecodingError.dataCorrupted(
+					DecodingError.Context(codingPath: [], debugDescription: "Failed to convert data to JSON.")
+				)
+			}
+
+			self = try decoder.decode(AgentData.self, from: jsonData)
 		}
-		
-		self.id = id
-		self.name = name
-		self.userId = userId
-		self.type = type
-		self.hasMemory = hasMemory
-		self.isPublic = isPublic
-		self.createdAt = createdAt
-		self.updatedAt = updatedAt
+}
+
+public struct LLM: Codable {
+	let apiKey: String
+	let model: String
+	let provider: String
+
+	enum CodingKeys: String, CodingKey {
+		case model = "model"
+		case apiKey = "api_key"
+		case provider = "provider"
 	}
+}
+
+public struct User: Codable {
+	let agent, agentTrace, apiToken, document: String?
+	let prompt, tool: String?
+	let createdAt: String
+	let deletedAt: String?
+	let email, id, name, password: String
+	let profile, updatedAt: String?
 }
 
 
