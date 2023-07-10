@@ -1,6 +1,7 @@
 //
 // AgentDocumentsAPI.swift
 //
+//  Created by Simon Weniger on 09.07.23.
 //
 
 import Foundation
@@ -14,8 +15,8 @@ open class AgentDocumentsAPI {
      - parameter body: (body)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func createAgentDocumentApiV1AgentDocumentsPost(body: AgentDocument, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        createAgentDocumentApiV1AgentDocumentsPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func createAgentDocument(body: AgentDocument, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		createAgentDocumentRequest(body: body).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -37,7 +38,7 @@ open class AgentDocumentsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func createAgentDocumentApiV1AgentDocumentsPostWithRequestBuilder(body: AgentDocument) -> RequestBuilder<Void> {
+    open class func createAgentDocumentRequest(body: AgentDocument) -> RequestBuilder<Void> {
         let path = "/api/v1/agent-documents"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
@@ -54,8 +55,8 @@ open class AgentDocumentsAPI {
      - parameter agentDocumentId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteAgentDocumentApiV1AgentDocumentsAgentDocumentIdDelete(agentDocumentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteAgentDocumentApiV1AgentDocumentsAgentDocumentIdDeleteWithRequestBuilder(agentDocumentId: agentDocumentId).execute { (response, error) -> Void in
+    open class func deleteAgentDocument(agentDocumentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        deleteAgentDocumentRequest(agentDocumentId: agentDocumentId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -77,7 +78,7 @@ open class AgentDocumentsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteAgentDocumentApiV1AgentDocumentsAgentDocumentIdDeleteWithRequestBuilder(agentDocumentId: String) -> RequestBuilder<Void> {
+    open class func deleteAgentDocumentRequest(agentDocumentId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/agent-documents/{agentDocumentId}"
         let agentDocumentIdPreEscape = "\(agentDocumentId)"
         let agentDocumentIdPostEscape = agentDocumentIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -97,8 +98,8 @@ open class AgentDocumentsAPI {
      - parameter agentDocumentId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getAgentDocumentApiV1AgentDocumentsAgentDocumentIdGet(agentDocumentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        getAgentDocumentApiV1AgentDocumentsAgentDocumentIdGetWithRequestBuilder(agentDocumentId: agentDocumentId).execute { (response, error) -> Void in
+    open class func getAgentDocument(agentDocumentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        getAgentDocumentRequest(agentDocumentId: agentDocumentId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -120,7 +121,7 @@ open class AgentDocumentsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func getAgentDocumentApiV1AgentDocumentsAgentDocumentIdGetWithRequestBuilder(agentDocumentId: String) -> RequestBuilder<Void> {
+    open class func getAgentDocumentRequest(agentDocumentId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/agent-documents/{agentDocumentId}"
         let agentDocumentIdPreEscape = "\(agentDocumentId)"
         let agentDocumentIdPostEscape = agentDocumentIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -140,8 +141,8 @@ open class AgentDocumentsAPI {
      - parameter expand: (query)  (optional, default to false)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func listAgentDocumentsApiV1AgentDocumentsGet(expand: Bool? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        listAgentDocumentsApiV1AgentDocumentsGetWithRequestBuilder(expand: expand).execute { (response, error) -> Void in
+    open class func listAgentDocuments(expand: Bool? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        listAgentDocumentsRequest(expand: expand).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -163,7 +164,7 @@ open class AgentDocumentsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func listAgentDocumentsApiV1AgentDocumentsGetWithRequestBuilder(expand: Bool? = nil) -> RequestBuilder<Void> {
+    open class func listAgentDocumentsRequest(expand: Bool? = nil) -> RequestBuilder<Void> {
         let path = "/api/v1/agent-documents"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters: [String:Any]? = nil

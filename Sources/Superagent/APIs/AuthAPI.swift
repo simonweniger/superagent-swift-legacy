@@ -1,6 +1,7 @@
 //
 // AuthAPI.swift
 //
+//  Created by Simon Weniger on 09.07.23.
 //
 
 import Foundation
@@ -14,8 +15,8 @@ open class AuthAPI {
      - parameter body: (body)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func signInApiV1AuthSignInPost(body: SignIn, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        signInApiV1AuthSignInPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func signIn(body: SignIn, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		signInRequest(body: body).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -35,7 +36,7 @@ open class AuthAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func signInApiV1AuthSignInPostWithRequestBuilder(body: SignIn) -> RequestBuilder<Void> {
+    open class func signInRequest(body: SignIn) -> RequestBuilder<Void> {
         let path = "/api/v1/auth/sign-in"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
@@ -52,8 +53,8 @@ open class AuthAPI {
      - parameter body: (body)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func signUpApiV1AuthSignUpPost(body: SignUp, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        signUpApiV1AuthSignUpPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func signUp(body: SignUp, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		signUpRequest(body: body).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -73,7 +74,7 @@ open class AuthAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func signUpApiV1AuthSignUpPostWithRequestBuilder(body: SignUp) -> RequestBuilder<Void> {
+    open class func signUpRequest(body: SignUp) -> RequestBuilder<Void> {
         let path = "/api/v1/auth/sign-up"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)

@@ -1,6 +1,7 @@
 //
 // ToolsAPI.swift
 //
+//  Created by Simon Weniger on 09.07.23.
 //
 
 import Foundation
@@ -14,8 +15,8 @@ open class ToolsAPI {
      - parameter body: (body)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func createAToolApiV1ToolsPost(body: Tool, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        createAToolApiV1ToolsPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func createTool(body: Tool, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        createToolRequest(body: body).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -37,7 +38,7 @@ open class ToolsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func createAToolApiV1ToolsPostWithRequestBuilder(body: Tool) -> RequestBuilder<Void> {
+    open class func createToolRequest(body: Tool) -> RequestBuilder<Void> {
         let path = "/api/v1/tools"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
@@ -54,8 +55,8 @@ open class ToolsAPI {
      - parameter toolId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteToolApiV1ToolsToolIdDelete(toolId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteToolApiV1ToolsToolIdDeleteWithRequestBuilder(toolId: toolId).execute { (response, error) -> Void in
+    open class func deleteTool(toolId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		deleteToolRequest(toolId: toolId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -77,7 +78,7 @@ open class ToolsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteToolApiV1ToolsToolIdDeleteWithRequestBuilder(toolId: String) -> RequestBuilder<Void> {
+    open class func deleteToolRequest(toolId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/tools/{toolId}"
         let toolIdPreEscape = "\(toolId)"
         let toolIdPostEscape = toolIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -97,8 +98,8 @@ open class ToolsAPI {
      - parameter toolId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getToolApiV1ToolsToolIdGet(toolId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        getToolApiV1ToolsToolIdGetWithRequestBuilder(toolId: toolId).execute { (response, error) -> Void in
+    open class func getTool(toolId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		getToolRequest(toolId: toolId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -120,7 +121,7 @@ open class ToolsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func getToolApiV1ToolsToolIdGetWithRequestBuilder(toolId: String) -> RequestBuilder<Void> {
+    open class func getToolRequest(toolId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/tools/{toolId}"
         let toolIdPreEscape = "\(toolId)"
         let toolIdPostEscape = toolIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -139,8 +140,8 @@ open class ToolsAPI {
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func listToolsApiV1ToolsGet(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        listToolsApiV1ToolsGetWithRequestBuilder().execute { (response, error) -> Void in
+    open class func listTools(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		listToolsRequest().execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -161,7 +162,7 @@ open class ToolsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func listToolsApiV1ToolsGetWithRequestBuilder() -> RequestBuilder<Void> {
+    open class func listToolsRequest() -> RequestBuilder<Void> {
         let path = "/api/v1/tools"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters: [String:Any]? = nil
@@ -179,8 +180,8 @@ open class ToolsAPI {
      - parameter toolId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func patchToolApiV1ToolsToolIdPatch(body: Any, toolId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        patchToolApiV1ToolsToolIdPatchWithRequestBuilder(body: body, toolId: toolId).execute { (response, error) -> Void in
+    open class func updateTool(body: Any, toolId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		updateToolRequest(body: body, toolId: toolId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -203,7 +204,7 @@ open class ToolsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func patchToolApiV1ToolsToolIdPatchWithRequestBuilder(body: Any, toolId: String) -> RequestBuilder<Void> {
+    open class func updateToolRequest(body: Any, toolId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/tools/{toolId}"
         let toolIdPreEscape = "\(toolId)"
         let toolIdPostEscape = toolIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""

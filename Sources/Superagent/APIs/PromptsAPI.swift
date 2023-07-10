@@ -1,6 +1,7 @@
 //
 // PromptsAPI.swift
 //
+//  Created by Simon Weniger on 09.07.23.
 //
 
 import Foundation
@@ -14,8 +15,8 @@ open class PromptsAPI {
      - parameter body: (body)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func createAPromptApiV1PromptsPost(body: Prompt, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        createAPromptApiV1PromptsPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func createPrompt(body: Prompt, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		createPromptRequest(body: body).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -37,7 +38,7 @@ open class PromptsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func createAPromptApiV1PromptsPostWithRequestBuilder(body: Prompt) -> RequestBuilder<Void> {
+    open class func createPromptRequest(body: Prompt) -> RequestBuilder<Void> {
         let path = "/api/v1/prompts"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
@@ -54,8 +55,8 @@ open class PromptsAPI {
      - parameter promptId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deletePromptApiV1PromptsPromptIdDelete(promptId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deletePromptApiV1PromptsPromptIdDeleteWithRequestBuilder(promptId: promptId).execute { (response, error) -> Void in
+    open class func deletePrompt(promptId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		deletePromptRequest(promptId: promptId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -77,7 +78,7 @@ open class PromptsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func deletePromptApiV1PromptsPromptIdDeleteWithRequestBuilder(promptId: String) -> RequestBuilder<Void> {
+    open class func deletePromptRequest(promptId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/prompts/{promptId}"
         let promptIdPreEscape = "\(promptId)"
         let promptIdPostEscape = promptIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -97,8 +98,8 @@ open class PromptsAPI {
      - parameter promptId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getPromptApiV1PromptsPromptIdGet(promptId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        getPromptApiV1PromptsPromptIdGetWithRequestBuilder(promptId: promptId).execute { (response, error) -> Void in
+    open class func getPrompt(promptId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		getPromptRequest(promptId: promptId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -120,7 +121,7 @@ open class PromptsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func getPromptApiV1PromptsPromptIdGetWithRequestBuilder(promptId: String) -> RequestBuilder<Void> {
+    open class func getPromptRequest(promptId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/prompts/{promptId}"
         let promptIdPreEscape = "\(promptId)"
         let promptIdPostEscape = promptIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -139,8 +140,8 @@ open class PromptsAPI {
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func listPromptsApiV1PromptsGet(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        listPromptsApiV1PromptsGetWithRequestBuilder().execute { (response, error) -> Void in
+    open class func listPrompts(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        listPromptsRequest().execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -161,7 +162,7 @@ open class PromptsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func listPromptsApiV1PromptsGetWithRequestBuilder() -> RequestBuilder<Void> {
+    open class func listPromptsRequest() -> RequestBuilder<Void> {
         let path = "/api/v1/prompts"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters: [String:Any]? = nil
@@ -179,8 +180,8 @@ open class PromptsAPI {
      - parameter promptId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func patchPromptApiV1PromptsPromptIdPatch(body: Any, promptId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        patchPromptApiV1PromptsPromptIdPatchWithRequestBuilder(body: body, promptId: promptId).execute { (response, error) -> Void in
+    open class func updatePrompt(body: Any, promptId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		updatePromptRequest(body: body, promptId: promptId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -203,7 +204,7 @@ open class PromptsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func patchPromptApiV1PromptsPromptIdPatchWithRequestBuilder(body: Any, promptId: String) -> RequestBuilder<Void> {
+    open class func updatePromptRequest(body: Any, promptId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/prompts/{promptId}"
         let promptIdPreEscape = "\(promptId)"
         let promptIdPostEscape = promptIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""

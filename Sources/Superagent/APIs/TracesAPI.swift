@@ -1,6 +1,7 @@
 //
 // TracesAPI.swift
 //
+//  Created by Simon Weniger on 09.07.23.
 //
 
 import Foundation
@@ -13,8 +14,8 @@ open class TracesAPI {
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func listAgentTracesApiV1TracesGet(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        listAgentTracesApiV1TracesGetWithRequestBuilder().execute { (response, error) -> Void in
+    open class func listAgentTraces(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		listAgentTracesRequest().execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -35,7 +36,7 @@ open class TracesAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func listAgentTracesApiV1TracesGetWithRequestBuilder() -> RequestBuilder<Void> {
+    open class func listAgentTracesRequest() -> RequestBuilder<Void> {
         let path = "/api/v1/traces"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters: [String:Any]? = nil

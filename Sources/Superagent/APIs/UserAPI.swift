@@ -1,6 +1,7 @@
 //
 // UserAPI.swift
 //
+//  Created by Simon Weniger on 09.07.23.
 //
 
 import Foundation
@@ -14,8 +15,8 @@ open class UserAPI {
      - parameter userId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func readUserApiV1UsersUserIdGet(userId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        readUserApiV1UsersUserIdGetWithRequestBuilder(userId: userId).execute { (response, error) -> Void in
+    open class func readUser(userId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		readUserRequest(userId: userId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -35,7 +36,7 @@ open class UserAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func readUserApiV1UsersUserIdGetWithRequestBuilder(userId: String) -> RequestBuilder<Void> {
+    open class func readUserRequest(userId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/users/{userId}"
         let userIdPreEscape = "\(userId)"
         let userIdPostEscape = userIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -54,8 +55,8 @@ open class UserAPI {
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func readUserMeApiV1UsersMeGet(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        readUserMeApiV1UsersMeGetWithRequestBuilder().execute { (response, error) -> Void in
+    open class func readUserMe(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		readUserMeRequest().execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -77,7 +78,7 @@ open class UserAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func readUserMeApiV1UsersMeGetWithRequestBuilder() -> RequestBuilder<Void> {
+    open class func readUserMeRequest() -> RequestBuilder<Void> {
         let path = "/api/v1/users/me"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters: [String:Any]? = nil

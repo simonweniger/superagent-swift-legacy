@@ -1,6 +1,7 @@
 //
 // ApiTokenAPI.swift
 //
+//  Created by Simon Weniger on 09.07.23.
 //
 
 import Foundation
@@ -14,8 +15,8 @@ open class ApiTokenAPI {
      - parameter body: (body)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func createAPITokenApiV1ApiTokensPost(body: ApiToken, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        createAPITokenApiV1ApiTokensPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func createAPIToken(body: ApiToken, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		createAPITokenRequest(body: body).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -37,7 +38,7 @@ open class ApiTokenAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func createAPITokenApiV1ApiTokensPostWithRequestBuilder(body: ApiToken) -> RequestBuilder<Void> {
+    open class func createAPITokenRequest(body: ApiToken) -> RequestBuilder<Void> {
         let path = "/api/v1/api-tokens"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
@@ -54,8 +55,8 @@ open class ApiTokenAPI {
      - parameter tokenId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteAPITokenApiV1ApiTokensTokenIdDelete(tokenId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteAPITokenApiV1ApiTokensTokenIdDeleteWithRequestBuilder(tokenId: tokenId).execute { (response, error) -> Void in
+    open class func deleteAPIToken(tokenId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		deleteAPITokenRequest(tokenId: tokenId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -77,7 +78,7 @@ open class ApiTokenAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteAPITokenApiV1ApiTokensTokenIdDeleteWithRequestBuilder(tokenId: String) -> RequestBuilder<Void> {
+    open class func deleteAPITokenRequest(tokenId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/api-tokens/{tokenId}"
         let tokenIdPreEscape = "\(tokenId)"
         let tokenIdPostEscape = tokenIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -97,8 +98,8 @@ open class ApiTokenAPI {
      - parameter tokenId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getAPITokenApiV1ApiTokensTokenIdGet(tokenId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        getAPITokenApiV1ApiTokensTokenIdGetWithRequestBuilder(tokenId: tokenId).execute { (response, error) -> Void in
+    open class func getAPIToken(tokenId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		getAPITokenRequest(tokenId: tokenId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -120,7 +121,7 @@ open class ApiTokenAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func getAPITokenApiV1ApiTokensTokenIdGetWithRequestBuilder(tokenId: String) -> RequestBuilder<Void> {
+    open class func getAPITokenRequest(tokenId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/api-tokens/{tokenId}"
         let tokenIdPreEscape = "\(tokenId)"
         let tokenIdPostEscape = tokenIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -139,8 +140,8 @@ open class ApiTokenAPI {
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func listAPITokensApiV1ApiTokensGet(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        listAPITokensApiV1ApiTokensGetWithRequestBuilder().execute { (response, error) -> Void in
+    open class func listAPITokens(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		listAPITokensRequest().execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -161,7 +162,7 @@ open class ApiTokenAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func listAPITokensApiV1ApiTokensGetWithRequestBuilder() -> RequestBuilder<Void> {
+    open class func listAPITokensRequest() -> RequestBuilder<Void> {
         let path = "/api/v1/api-tokens"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters: [String:Any]? = nil

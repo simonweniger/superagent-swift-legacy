@@ -1,6 +1,7 @@
 //
 // AgentToolsAPI.swift
 //
+//  Created by Simon Weniger on 09.07.23.
 //
 
 import Foundation
@@ -14,8 +15,8 @@ open class AgentToolsAPI {
      - parameter body: (body)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func createAgentToolApiV1AgentToolsPost(body: AgentTool, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        createAgentToolApiV1AgentToolsPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func createAgentTool(body: AgentTool, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        createAgentToolRequest(body: body).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -37,7 +38,7 @@ open class AgentToolsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func createAgentToolApiV1AgentToolsPostWithRequestBuilder(body: AgentTool) -> RequestBuilder<Void> {
+    open class func createAgentToolRequest(body: AgentTool) -> RequestBuilder<Void> {
         let path = "/api/v1/agent-tools"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
@@ -54,8 +55,8 @@ open class AgentToolsAPI {
      - parameter agentToolId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteAgentToolApiV1AgentToolsAgentToolIdDelete(agentToolId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteAgentToolApiV1AgentToolsAgentToolIdDeleteWithRequestBuilder(agentToolId: agentToolId).execute { (response, error) -> Void in
+    open class func deleteAgentTool(agentToolId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        deleteAgentToolRequest(agentToolId: agentToolId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -77,7 +78,7 @@ open class AgentToolsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteAgentToolApiV1AgentToolsAgentToolIdDeleteWithRequestBuilder(agentToolId: String) -> RequestBuilder<Void> {
+    open class func deleteAgentToolRequest(agentToolId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/agent-tools/{agentToolId}"
         let agentToolIdPreEscape = "\(agentToolId)"
         let agentToolIdPostEscape = agentToolIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -97,8 +98,8 @@ open class AgentToolsAPI {
      - parameter agentToolId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getAgentToolApiV1AgentToolsAgentToolIdGet(agentToolId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        getAgentToolApiV1AgentToolsAgentToolIdGetWithRequestBuilder(agentToolId: agentToolId).execute { (response, error) -> Void in
+    open class func getAgentTool(agentToolId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        getAgentToolRequest(agentToolId: agentToolId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -120,7 +121,7 @@ open class AgentToolsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func getAgentToolApiV1AgentToolsAgentToolIdGetWithRequestBuilder(agentToolId: String) -> RequestBuilder<Void> {
+    open class func getAgentToolRequest(agentToolId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/agent-tools/{agentToolId}"
         let agentToolIdPreEscape = "\(agentToolId)"
         let agentToolIdPostEscape = agentToolIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -140,8 +141,8 @@ open class AgentToolsAPI {
      - parameter expand: (query)  (optional, default to false)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func listAgentToolsApiV1AgentToolsGet(expand: Bool? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        listAgentToolsApiV1AgentToolsGetWithRequestBuilder(expand: expand).execute { (response, error) -> Void in
+    open class func listAgentTools(expand: Bool? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        listAgentToolsRequest(expand: expand).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -163,7 +164,7 @@ open class AgentToolsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func listAgentToolsApiV1AgentToolsGetWithRequestBuilder(expand: Bool? = nil) -> RequestBuilder<Void> {
+    open class func listAgentToolsRequest(expand: Bool? = nil) -> RequestBuilder<Void> {
         let path = "/api/v1/agent-tools"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters: [String:Any]? = nil

@@ -1,10 +1,11 @@
 //
 // AgentAPI.swift
 //
+//  Created by Simon Weniger on 09.07.23.
 //
 
 import Foundation
-import Alamofire
+import Almonfire
 
 
 open class AgentAPI {
@@ -14,8 +15,8 @@ open class AgentAPI {
      - parameter body: (body)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func createAgentApiV1AgentsPost(body: Agent, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        createAgentApiV1AgentsPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func createAgent(body: Agent, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		createAgentRequest(body: body).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -37,7 +38,7 @@ open class AgentAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func createAgentApiV1AgentsPostWithRequestBuilder(body: Agent) -> RequestBuilder<Void> {
+    open class func createAgentRequest(body: Agent) -> RequestBuilder<Void> {
         let path = "/api/v1/agents"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
@@ -54,8 +55,8 @@ open class AgentAPI {
      - parameter agentId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteAgentApiV1AgentsAgentIdDelete(agentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteAgentApiV1AgentsAgentIdDeleteWithRequestBuilder(agentId: agentId).execute { (response, error) -> Void in
+    open class func deleteAgent(agentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        deleteAgentRequest(agentId: agentId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -77,7 +78,7 @@ open class AgentAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteAgentApiV1AgentsAgentIdDeleteWithRequestBuilder(agentId: String) -> RequestBuilder<Void> {
+    open class func deleteAgentRequest(agentId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/agents/{agentId}"
         let agentIdPreEscape = "\(agentId)"
         let agentIdPostEscape = agentIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -97,8 +98,8 @@ open class AgentAPI {
      - parameter agentId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getAgentApiV1AgentsAgentIdGet(agentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        getAgentApiV1AgentsAgentIdGetWithRequestBuilder(agentId: agentId).execute { (response, error) -> Void in
+    open class func getAgent(agentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        getAgentRequest(agentId: agentId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -120,7 +121,7 @@ open class AgentAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func getAgentApiV1AgentsAgentIdGetWithRequestBuilder(agentId: String) -> RequestBuilder<Void> {
+    open class func getAgentRequest(agentId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/agents/{agentId}"
         let agentIdPreEscape = "\(agentId)"
         let agentIdPostEscape = agentIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -139,7 +140,7 @@ open class AgentAPI {
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func listAllAgentsApiV1AgentsGet(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    open class func listAgents(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         listAllAgentsApiV1AgentsGetWithRequestBuilder().execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
@@ -161,7 +162,7 @@ open class AgentAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func listAllAgentsApiV1AgentsGetWithRequestBuilder() -> RequestBuilder<Void> {
+    open class func listAgentsRequest() -> RequestBuilder<Void> {
         let path = "/api/v1/agents"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters: [String:Any]? = nil
@@ -179,8 +180,8 @@ open class AgentAPI {
      - parameter agentId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func patchAgentApiV1AgentsAgentIdPatch(body: Any, agentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        patchAgentApiV1AgentsAgentIdPatchWithRequestBuilder(body: body, agentId: agentId).execute { (response, error) -> Void in
+    open class func updateAgent(body: Any, agentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        updateAgentRequest(body: body, agentId: agentId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -203,7 +204,7 @@ open class AgentAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func patchAgentApiV1AgentsAgentIdPatchWithRequestBuilder(body: Any, agentId: String) -> RequestBuilder<Void> {
+    open class func updateAgentRequest(body: Any, agentId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/agents/{agentId}"
         let agentIdPreEscape = "\(agentId)"
         let agentIdPostEscape = agentIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -224,7 +225,7 @@ open class AgentAPI {
      - parameter agentId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func promptAgentApiV1AgentsAgentIdPredictPost(body: PredictAgent, agentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+    open class func prompt(body: PredictAgent, agentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
         promptAgentApiV1AgentsAgentIdPredictPostWithRequestBuilder(body: body, agentId: agentId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
@@ -248,7 +249,7 @@ open class AgentAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func promptAgentApiV1AgentsAgentIdPredictPostWithRequestBuilder(body: PredictAgent, agentId: String) -> RequestBuilder<Void> {
+    open class func promptRequest(body: PredictAgent, agentId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/agents/{agentId}/predict"
         let agentIdPreEscape = "\(agentId)"
         let agentIdPostEscape = agentIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""

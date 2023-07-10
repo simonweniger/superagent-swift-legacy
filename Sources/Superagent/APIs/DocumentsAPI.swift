@@ -1,6 +1,7 @@
 //
 // DocumentsAPI.swift
 //
+//  Created by Simon Weniger on 09.07.23.
 //
 
 import Foundation
@@ -14,8 +15,8 @@ open class DocumentsAPI {
      - parameter body: (body)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func createDocumentApiV1DocumentsPost(body: Document, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        createDocumentApiV1DocumentsPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func createDocuments(body: Document, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+        createDocumentsRequest(body: body).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -37,7 +38,7 @@ open class DocumentsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func createDocumentApiV1DocumentsPostWithRequestBuilder(body: Document) -> RequestBuilder<Void> {
+    open class func createDocumentsRequest(body: Document) -> RequestBuilder<Void> {
         let path = "/api/v1/documents"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
@@ -54,8 +55,8 @@ open class DocumentsAPI {
      - parameter documentId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func deleteDocumentApiV1DocumentsDocumentIdDelete(documentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        deleteDocumentApiV1DocumentsDocumentIdDeleteWithRequestBuilder(documentId: documentId).execute { (response, error) -> Void in
+    open class func deleteDocument(documentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		deleteDocumentRequest(documentId: documentId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -77,7 +78,7 @@ open class DocumentsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteDocumentApiV1DocumentsDocumentIdDeleteWithRequestBuilder(documentId: String) -> RequestBuilder<Void> {
+    open class func deleteDocumentRequest(documentId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/documents/{documentId}"
         let documentIdPreEscape = "\(documentId)"
         let documentIdPostEscape = documentIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -97,8 +98,8 @@ open class DocumentsAPI {
      - parameter documentId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getDocumentApiV1DocumentsDocumentIdGet(documentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        getDocumentApiV1DocumentsDocumentIdGetWithRequestBuilder(documentId: documentId).execute { (response, error) -> Void in
+    open class func getDocument(documentId: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		getDocumentRequest(documentId: documentId).execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -120,7 +121,7 @@ open class DocumentsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func getDocumentApiV1DocumentsDocumentIdGetWithRequestBuilder(documentId: String) -> RequestBuilder<Void> {
+    open class func getDocumentRequest(documentId: String) -> RequestBuilder<Void> {
         var path = "/api/v1/documents/{documentId}"
         let documentIdPreEscape = "\(documentId)"
         let documentIdPostEscape = documentIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -139,8 +140,8 @@ open class DocumentsAPI {
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func listDocumentsApiV1DocumentsGet(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        listDocumentsApiV1DocumentsGetWithRequestBuilder().execute { (response, error) -> Void in
+    open class func listDocuments(completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
+		listDocumentsRequest().execute { (response, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -161,7 +162,7 @@ open class DocumentsAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func listDocumentsApiV1DocumentsGetWithRequestBuilder() -> RequestBuilder<Void> {
+    open class func listDocumentsRequest() -> RequestBuilder<Void> {
         let path = "/api/v1/documents"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters: [String:Any]? = nil
