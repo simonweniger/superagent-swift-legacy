@@ -11,23 +11,6 @@ import Almonfire
 open class AgentAPI {
     /**
      Create Agent
-
-     - parameter body: (body)  
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    open class func createAgent(body: Agent, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-		createAgentRequest(body: body).execute { (response, error) -> Void in
-            if error == nil {
-                completion((), error)
-            } else {
-                completion(nil, error)
-            }
-        }
-    }
-
-
-    /**
-     Create Agent
      - POST /api/v1/agents
 
      - :
@@ -38,16 +21,25 @@ open class AgentAPI {
 
      - returns: RequestBuilder<Void> 
      */
-    open class func createAgentRequest(body: Agent) -> RequestBuilder<Void> {
+	open class func createAgentRequest(body: Agent) -> RequestBuilder<Void> {
         let path = "/api/v1/agents"
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
+		
+		guard let url = URLComponents(string: "\(self.urlString)\(endpoint)") else {
+			throw URLError(.badURL)
+		}
+		
+		var request = URLRequest(url: url)
+		request.httpMethod = method.rawValue.uppercased()
+		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+		request.addValue("Bearer \(self.apiKey)", forHTTPHeaderField: "Authorization")
 
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
-        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
+        return requestBuilder.init(method: "POST", URLString: (request?.string ?? URLString), parameters: parameters, isBody: true)
     }
     /**
      Delete Agent
