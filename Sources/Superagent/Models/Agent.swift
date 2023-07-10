@@ -24,10 +24,15 @@ public struct Agent: Codable {
         self.promptId = promptId
     }
 
-	public enum LLM : String {
-		case provider,
-		case mode,
-		case apiKey
-	}
+	public struct LLM: Codable {
+			public var provider: String
+			public var model: String
+			public var apiKey: String
 
+			public init(provider: String, model: String, apiKey: String) {
+				self.provider = provider
+				self.model = model
+				self.apiKey = apiKey
+			}
+		}
 }
