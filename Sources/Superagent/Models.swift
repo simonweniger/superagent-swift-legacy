@@ -90,45 +90,39 @@ public struct Document {
 	}
 }
 
-struct Response: Codable {
-	let data: AgentData
-	let success: Int
-}
-
-public struct AgentData: Codable {
-	public let agentDocument, agentMemory, agentTool, agentTrace: String?
-	public let createdAt, document, documentId: String?
-	public let hasMemory: Int
+public struct Agent {
 	public let id: String
-	public let isPublic: Int
-	public let llm: LLM
-	public let name, prompt: String?
-	public let promptId, tool, toolId: String?
-	public let type: String
-	public let updatedAt: String
-	public let user: User
 	public let userId: String
-}
-
-public struct LLM: Codable {
-	public let apiKey: String
-	public let model: String
-	public let provider: String
-
-	enum CodingKeys: String, CodingKey {
-		case model = "model"
-		case apiKey = "api_key"
-		case provider = "provider"
-	}
-}
-
-public struct User: Codable {
-	public let agent, agentTrace, apiToken, document: String?
-	public let prompt, tool: String?
+	public let name: String
+	public let type: String
+	public let hasMemory: Bool
+	public let isPublic: Bool
 	public let createdAt: String
-	public let deletedAt: String?
-	public let email, id, name, password: String
-	public let profile, updatedAt: String?
+	public let updatedAt: String
+	
+	
+	public init?(data: [String: Any]) {
+		guard let id = data["id"] as? String,
+			  let userId = data["userId"] as? String,
+			  let name = data["name"] as? String,
+			  let type = data["type"] as? String,
+			  let hasMemory = data["hasMemory"] as? Bool,
+			  let isPublic = data["isPublic"] as? Bool,
+			  let createdAt = data["createdAt"] as? String,
+			  let updatedAt = data["updatedAr"] as? String
+		else {
+			return nil
+		}
+		
+		self.id = id
+		self.name = name
+		self.userId = userId
+		self.type = type
+		self.hasMemory = hasMemory
+		self.isPublic = isPublic
+		self.createdAt = createdAt
+		self.updatedAt = updatedAt
+	}
 }
 
 
