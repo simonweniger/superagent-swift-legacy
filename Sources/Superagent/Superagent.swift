@@ -35,11 +35,15 @@ public struct SuperagentAPI: @unchecked Sendable {
 		self.apiKey = apiKey
 	}
 	
-	private let jsonDecoder: JSONDecoder = {
-		let jsonDecoder = JSONDecoder()
-		jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-		return jsonDecoder
-	}()
+	private func convertJson(data: [String: Any]) async throws -> [String: String]{
+		let decoder = JSONDecoder()
+		decoder.keyDecodingStrategy = .convertFromSnakeCase
+		guard let jsonData = try? JSONSerialization.data(withJSONObject: data, options: []) else {
+			throw DecodingError.dataCorrupted(
+				DecodingError.Context(codingPath: [], debugDescription: "Failed to convert data to JSON.")
+			)
+		}
+	}
 	
 	//createRequest
 	private func createRequest(method: HttpMethod, endpoint: String, data: [String: Any]? = nil) throws -> URLRequest {
@@ -76,7 +80,7 @@ public struct SuperagentAPI: @unchecked Sendable {
 	// defined Request
 	private func request(method: HttpMethod, endpoint: String, data: [String: Any]? = nil) async throws -> Any  {
 		let request = try createRequest(method: method, endpoint: endpoint, data: data)
-		var (data, response) = try await URLSession.shared.data(for: request)
+		let (data, response) = try await URLSession.shared.data(for: request)
 	  
 		if let httpResponse = response as? HTTPURLResponse, 200..<300 ~= httpResponse.statusCode {
 		  if let output = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
@@ -254,8 +258,10 @@ public struct SuperagentAPI: @unchecked Sendable {
 		guard let outputData = data as? [String: Any] else {
 				throw SuperagentError.failedToRetrievePrompt
 			}
+		
+		let convertedData = try await convertJson(data: outputData)
 
-		let agent = try AgentData(from: outputData)
+		let agent = try AgentData(from: convertedData as! Decoder)
 		
 		return agent
 	}

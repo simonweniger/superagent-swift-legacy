@@ -7,6 +7,8 @@
 
 import Foundation
 
+
+
 public struct Prompt {
 	public let id: String
 	public let name: String
@@ -94,37 +96,24 @@ struct Response: Codable {
 }
 
 public struct AgentData: Codable {
-	let agentDocument, agentMemory, agentTool, agentTrace: String?
-	let createdAt, document, documentId: String?
-	let hasMemory: Int
-	let id: String
-	let isPublic: Int
-	let llm: LLM
-	let name, prompt: String?
-	let promptId, tool, toolId: String?
-	let type: String
-	let updatedAt: String
-	let user: User
-	let userId: String
-	
-
-	init(from data: [String: Any]) throws {
-			let decoder = JSONDecoder()
-			decoder.keyDecodingStrategy = .convertFromSnakeCase
-			guard let jsonData = try? JSONSerialization.data(withJSONObject: data, options: []) else {
-				throw DecodingError.dataCorrupted(
-					DecodingError.Context(codingPath: [], debugDescription: "Failed to convert data to JSON.")
-				)
-			}
-
-			self = try decoder.decode(AgentData.self, from: jsonData)
-		}
+	public let agentDocument, agentMemory, agentTool, agentTrace: String?
+	public let createdAt, document, documentId: String?
+	public let hasMemory: Int
+	public let id: String
+	public let isPublic: Int
+	public let llm: LLM
+	public let name, prompt: String?
+	public let promptId, tool, toolId: String?
+	public let type: String
+	public let updatedAt: String
+	public let user: User
+	public let userId: String
 }
 
 public struct LLM: Codable {
-	let apiKey: String
-	let model: String
-	let provider: String
+	public let apiKey: String
+	public let model: String
+	public let provider: String
 
 	enum CodingKeys: String, CodingKey {
 		case model = "model"
@@ -134,12 +123,12 @@ public struct LLM: Codable {
 }
 
 public struct User: Codable {
-	let agent, agentTrace, apiToken, document: String?
-	let prompt, tool: String?
-	let createdAt: String
-	let deletedAt: String?
-	let email, id, name, password: String
-	let profile, updatedAt: String?
+	public let agent, agentTrace, apiToken, document: String?
+	public let prompt, tool: String?
+	public let createdAt: String
+	public let deletedAt: String?
+	public let email, id, name, password: String
+	public let profile, updatedAt: String?
 }
 
 
