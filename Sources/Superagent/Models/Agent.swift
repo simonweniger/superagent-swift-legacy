@@ -12,11 +12,11 @@ public struct Agent: Codable {
 
     public var name: String
     public var type: String
-    public var llm: Any?
+    public var llm: LLM?
     public var hasMemory: Bool?
     public var promptId: String?
 
-    public init(name: String, type: String, llm: Any? = nil, hasMemory: Bool? = nil, promptId: String? = nil) {
+    public init(name: String, type: String, llm: LLM? = nil, hasMemory: Bool? = nil, promptId: String? = nil) {
         self.name = name
         self.type = type
         self.llm = llm
@@ -24,5 +24,10 @@ public struct Agent: Codable {
         self.promptId = promptId
     }
 
+	public enum LLM : String {
+		case provider,
+		case mode,
+		case apiKey
+	}
 
 }
