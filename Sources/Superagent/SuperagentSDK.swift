@@ -23,13 +23,13 @@ enum SuperagentError: Error {
 }
 
 @available(macOS 12.0, *)
-struct SuperagentSDK {
+public struct SuperagentSDK {
 	
-	var baseUrl: String
-	var authToken: String
+	public var baseUrl: String
+	public var authToken: String
 	
 	// init auth and api url
-	init(authToken: String) {
+	public init(authToken: String) {
 		self.baseUrl = "https://api.superagent.sh/api/v1"
 		self.authToken = authToken
 	}
@@ -82,7 +82,7 @@ struct SuperagentSDK {
 	
 	//Prompts
 	///Retuns a specific prompt
-	func getPrompt(id: String) async throws -> Prompt {
+	public func getPrompt(id: String) async throws -> Prompt {
 		let data = try await request(method: .get, endpoint: "/prompts/\(id)")
 		guard let responseData = data as? [String: Any],
 			  let jsonData = responseData["data"] as? [String: Any] else {
@@ -97,7 +97,7 @@ struct SuperagentSDK {
 	}
 	
 	///Delete prompt
-	func deletePrompt(id: String) async throws -> [String: Any] {
+	public func deletePrompt(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/prompts/\(id)")
 		guard let responseData = data as? [String: Any],
 			  let success = responseData["success"] as? [String: Any] else {
@@ -108,7 +108,7 @@ struct SuperagentSDK {
 	}
 	
 	///Lists all prompts
-	func listPrompts(id: String) async throws -> [Prompt] {
+	public func listPrompts(id: String) async throws -> [Prompt] {
 		let data = try await request(method: .get, endpoint: "/prompts")
 		
 		guard let responseData = data as? [String: Any],
@@ -129,7 +129,7 @@ struct SuperagentSDK {
 	}
 	
 	///Update a specific prompt
-	func updatePrompt(id: String, name: String, inputVariables: [String] = [], template: String) async throws -> [String: Any] {
+	public func updatePrompt(id: String, name: String, inputVariables: [String] = [], template: String) async throws -> [String: Any] {
 		let payload: [String: Any] = ["name": name, "input_variables": inputVariables, "template": template]
 		let data = try await request(method: .patch, endpoint: "/prompts/\(id)", data: payload)
 		guard let outputData = data as? [String: Any] else {
@@ -139,7 +139,7 @@ struct SuperagentSDK {
 	}
 	
 	///Create a new prompt
-	func createPrompt(name: String, inputVariables: [String] = [], template: String) async throws -> [String: Any] {
+	public func createPrompt(name: String, inputVariables: [String] = [], template: String) async throws -> [String: Any] {
 		let payload: [String: Any] = ["name": name, "input_variables": inputVariables, "template": template]
 		let data = try await request(method: .post, endpoint: "/prompts", data: payload)
 		guard let outputData = data as? [String: Any] else {
@@ -150,7 +150,7 @@ struct SuperagentSDK {
 	
 	//Documents
 	///Returns a specific document
-	func getDocument(id: String) async throws -> [String: Any] {
+	public func getDocument(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/documents/\(id)")
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
@@ -159,7 +159,7 @@ struct SuperagentSDK {
 	}
 
 	///Delete document
-	func deleteDocument(id: String) async throws -> [String: Any] {
+	public func deleteDocument(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/documents/\(id)")
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
@@ -168,7 +168,7 @@ struct SuperagentSDK {
 	}
 
 	///Lists all documents
-	func listDocuments(id: String) async throws -> [String: Any] {
+	public func listDocuments(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/documents")
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
@@ -177,7 +177,7 @@ struct SuperagentSDK {
 	}
 
 	///Create a new document
-	func createDocument(name: String,
+	public func createDocument(name: String,
 						 url: URL,
 						 type: String,
 						 authorization: Any? = nil) async throws -> [String: Any] {
@@ -194,7 +194,7 @@ struct SuperagentSDK {
 	
 	//Agents
 	///Returns a specific agent
-	func getAgent(id: String) async throws -> Agent {
+	public func getAgent(id: String) async throws -> Agent {
 		let data = try await request(method: .get, endpoint: "/agents/\(id)")
 		guard let responseData = data as? [String: Any],
 			  let jsonData = responseData["data"] as? [String: Any] else {
@@ -209,7 +209,7 @@ struct SuperagentSDK {
 	}
 
 	///Delete agent
-	func deleteAgent(id: String) async throws -> [String: Any] {
+	public func deleteAgent(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/agents/\(id)")
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
@@ -218,7 +218,7 @@ struct SuperagentSDK {
 	}
 
 	///Lists all agents
-	func listAgents(id: String) async throws -> [String: Any] {
+	public func listAgents(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/agents")
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
@@ -227,7 +227,7 @@ struct SuperagentSDK {
 	}
 
 	///Create a new agent
-	func createAgent(name: String,
+	public func createAgent(name: String,
 					 llm: Agent.LLM,
 					 type: String,
 					 hasMemory: Bool,
@@ -252,7 +252,7 @@ struct SuperagentSDK {
 	}
 
 	///Create a new prediction
-	func createPrediction(id: String,
+	public func createPrediction(id: String,
 						  input: String,
 						  hasStreaming: Bool) async throws -> [String: Any] {
 		let payload: [String: Any] = ["name": input,
@@ -266,7 +266,7 @@ struct SuperagentSDK {
 	
 	//Agent Documents
 	///Get all Documents from an Agent
-	func getAgentDocuments() async throws -> [String: Any] {
+	public func getAgentDocuments() async throws -> [String: Any] {
 		do {
 			let data = try await request(method: .get, endpoint: "/agent-documents")
 			return data as? [String: Any] ?? [:]
@@ -276,7 +276,7 @@ struct SuperagentSDK {
 	}
 
 	///Add a Document to an Agent
-	func createAgentDocument(documentId: String, agentId: String) async throws -> [String: Any] {
+	public func createAgentDocument(documentId: String, agentId: String) async throws -> [String: Any] {
 		let payload: [String: Any] = ["documentId": documentId, "agentId": agentId]
 		let data = try await request(method: .post, endpoint: "/agents", data: payload)
 		guard let outputData = data as? [String: Any] else {
@@ -286,7 +286,7 @@ struct SuperagentSDK {
 	}
 
 	///Delete a Document from an Agent
-	func deleteAgentDocument(agentDocumentId: String) async throws -> [String: Any] {
+	public func deleteAgentDocument(agentDocumentId: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/agent-documents/\(agentDocumentId)")
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToCreatePrompt
@@ -296,7 +296,7 @@ struct SuperagentSDK {
 
 	//Tools
 	///Returns a specific tool
-	func getTool(id: String) async throws -> [String: Any] {
+	public func getTool(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/tools/\(id)")
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
@@ -305,7 +305,7 @@ struct SuperagentSDK {
 	}
 
 	///Delete tool
-	func deleteTool(id: String) async throws -> [String: Any] {
+	public func deleteTool(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/tools/\(id)")
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
@@ -314,7 +314,7 @@ struct SuperagentSDK {
 	}
 
 	///Lists all tools
-	func listTools(id: String) async throws -> [String: Any] {
+	public func listTools(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/tools")
 		guard let outputData = data as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
@@ -323,7 +323,7 @@ struct SuperagentSDK {
 	}
 
 	///Create a new tool
-	func createTool(name: String, type: String, metadata: Any? = nil) async throws -> [String: Any] {
+	public func createTool(name: String, type: String, metadata: Any? = nil) async throws -> [String: Any] {
 		var payload: [String: Any] = ["name": name, "type": type]
 		if let metadata = metadata {
 			payload["metadata"] = metadata
