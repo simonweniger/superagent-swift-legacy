@@ -8,7 +8,7 @@ import Foundation
 
 
 
-public struct PredictAgent: Codable {
+public struct PredictAgent {
 
     public var input: Any
     public var hasStreaming: Bool?

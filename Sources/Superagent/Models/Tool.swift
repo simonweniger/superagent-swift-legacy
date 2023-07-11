@@ -8,7 +8,7 @@ import Foundation
 
 
 
-public struct Tool: Codable {
+public struct Tool {
 
     public var name: String
     public var type: String

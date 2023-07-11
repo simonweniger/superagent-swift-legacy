@@ -8,7 +8,7 @@ import Foundation
 
 
 
-public struct Document: Codable {
+public struct Document {
 
     public var type: String
     public var url: String?
