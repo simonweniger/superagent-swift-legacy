@@ -82,18 +82,20 @@ public struct SuperagentSDK {
 	
 	//Prompts
 	///Retuns a specific prompt
-	public func getPrompt(id: String) async throws -> Prompt {
+	public func getPrompt(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/prompts/\(id)")
 		guard let responseData = data as? [String: Any],
-			  let jsonData = responseData["data"] as? [String: Any] else {
+			  let promptData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
-		let decoder = JSONDecoder()
-		let jsonDataEncoded = try JSONSerialization.data(withJSONObject: jsonData, options: [])
-		let prompt = try decoder.decode(Prompt.self, from: jsonDataEncoded)
+		print("getPrompt result: \(promptData)")
 		
-		return prompt
+		//let decoder = JSONDecoder()
+		//let jsonDataEncoded = try JSONSerialization.data(withJSONObject: jsonData, options: [])
+		//let prompt = try decoder.decode(Prompt.self, from: jsonDataEncoded)
+		
+		return promptData
 	}
 	
 	///Delete prompt
@@ -104,126 +106,170 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
+		print("deletePrompt result: \(success)")
+		
 		return success
 	}
 	
 	///Lists all prompts
-	public func listPrompts(id: String) async throws -> [Prompt] {
+	public func listPrompts(id: String) async throws -> [[String: Any]] {
 		let data = try await request(method: .get, endpoint: "/prompts")
 		
 		guard let responseData = data as? [String: Any],
-			  let jsonArray = responseData["data"] as? [[String: Any]] else {
+			  let promptsData = responseData["data"] as? [[String: Any]] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
-		let decoder = JSONDecoder()
-		var prompts = [Prompt]()
+		print("listPrompts result: \(promptData)")
 		
-		for json in jsonArray {
-			let jsonData = try JSONSerialization.data(withJSONObject: json, options: [])
-			let prompt = try decoder.decode(Prompt.self, from: jsonData)
-			prompts.append(prompt)
-		}
+		//let decoder = JSONDecoder()
+		//var prompts = [Prompt]()
 		
-		return prompts
+		//for json in jsonArray {
+		//	let jsonData = try JSONSerialization.data(withJSONObject: json, options: [])
+		//	let prompt = try decoder.decode(Prompt.self, from: jsonData)
+		//	prompts.append(prompt)
+		//}
+		
+		return promptsData
 	}
 	
 	///Update a specific prompt
-	public func updatePrompt(id: String, name: String, inputVariables: [String] = [], template: String) async throws -> [String: Any] {
-		let payload: [String: Any] = ["name": name, "input_variables": inputVariables, "template": template]
-		let data = try await request(method: .patch, endpoint: "/prompts/\(id)", data: payload)
-		guard let outputData = data as? [String: Any] else {
-			throw SuperagentError.failedToCreatePrompt
+	public func updatePrompt(promptId: String, newPrompt: Prompt) async throws -> [String: Any] {
+		let payload: [String: Any] = ["name": newPrompt.name, "input_variables": newPrompt.inputVariables, "template": newPrompt.template]
+		let data = try await request(method: .patch, endpoint: "/prompts/\(promptId)", data: payload)
+		
+		guard let responseData = data as? [String: Any],
+			  let promptData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("updatePrompt result: \(promptData)")
+		
+		return promptData
 	}
 	
 	///Create a new prompt
-	public func createPrompt(name: String, inputVariables: [String] = [], template: String) async throws -> [String: Any] {
-		let payload: [String: Any] = ["name": name, "input_variables": inputVariables, "template": template]
+	public func createPrompt(prompt: Prompt) async throws -> [String: Any] {
+		let payload: [String: Any] = ["name": prompt.name, "input_variables": prompt.inputVariables, "template": prompt.template]
 		let data = try await request(method: .post, endpoint: "/prompts", data: payload)
-		guard let outputData = data as? [String: Any] else {
-			throw SuperagentError.failedToCreatePrompt
+		
+		guard let responseData = data as? [String: Any],
+			  let promptData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("createPrompt result: \(documentData)")
+		
+		return promptData
 	}
 	
 	//Documents
 	///Returns a specific document
 	public func getDocument(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/documents/\(id)")
-		guard let outputData = data as? [String: Any] else {
+		
+		guard let responseData = data as? [String: Any],
+			  let documentData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("getDocument result: \(documentData)")
+		
+		return documentData
 	}
 
 	///Delete document
 	public func deleteDocument(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/documents/\(id)")
-		guard let outputData = data as? [String: Any] else {
+		
+		guard let responseData = data as? [String: Any],
+			  let documentData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("deleteDocument result: \(documentData)")
+		
+		return documentData
 	}
 
 	///Lists all documents
 	public func listDocuments(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/documents")
-		guard let outputData = data as? [String: Any] else {
+		
+		guard let responseData = data as? [String: Any],
+			  let documentData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("listDocuments result: \(documentData)")
+		
+		return documentData
 	}
 
 	///Create a new document
-	public func createDocument(name: String,
-						 url: URL,
-						 type: String,
-						 authorization: Any? = nil) async throws -> [String: Any] {
-		let payload: [String: Any] = ["name": name,
-									  "url": url.absoluteString, // passing String instead of URL
-									  "type": type, // passing rawValue of enum
-									  "authorization": authorization as Any]
+	public func createDocument(document: Document) async throws -> [String: Any] {
+		let payload: [String: Any] = ["name": document.name,
+									  "url": document.url as Any,
+									  "type": document.type,
+									  "authorization": document.authorization as Any]
 		let data = try await request(method: .post, endpoint: "/documents", data: payload)
-		guard let outputData = data as? [String: Any] else {
-			throw SuperagentError.failedToCreatePrompt
+		
+		guard let responseData = data as? [String: Any],
+			  let documentData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("createDocument result: \(documentData)")
+		
+		return documentData
 	}
 	
 	//Agents
 	///Returns a specific agent
-	public func getAgent(id: String) async throws -> Agent {
+	public func getAgent(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/agents/\(id)")
+		
 		guard let responseData = data as? [String: Any],
-			  let jsonData = responseData["data"] as? [String: Any] else {
+			  let agentData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
-		let decoder = JSONDecoder()
-		let jsonDataEncoded = try JSONSerialization.data(withJSONObject: jsonData, options: [])
-		let agent = try decoder.decode(Agent.self, from: jsonDataEncoded)
+		print("getAgent result: \(agentData)")
 		
-		return agent
+		//let decoder = JSONDecoder()
+		//let jsonDataEncoded = try JSONSerialization.data(withJSONObject: jsonData, options: [])
+		//let agent = try decoder.decode(Agent.self, from: jsonDataEncoded)
+		
+		return agentData
 	}
 
 	///Delete agent
 	public func deleteAgent(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/agents/\(id)")
-		guard let outputData = data as? [String: Any] else {
+		
+		guard let responseData = data as? [String: Any],
+			  let agentData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("deleteAgent result: \(agentData)")
+		
+		return agentData
 	}
 
 	///Lists all agents
 	public func listAgents(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/agents")
-		guard let outputData = data as? [String: Any] else {
+		
+		guard let responseData = data as? [String: Any],
+			  let agentData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("listAgents result: \(agentData)")
+		
+		return agentData
 	}
 	
 	///Create a new agent
@@ -234,14 +280,15 @@ public struct SuperagentSDK {
 									  "hasMemory": agent.hasMemory as Any,
 									  "promptId": agent.promptId ?? ""]
 		let data = try await request(method: .post, endpoint: "/agents", data: payload)
-		
-		//print("response: \(data)")
 
-		
 		guard let responseData = data as? [String: Any],
-			  let agent = responseData["data"] as? [String: Any] else {
+			  let agentData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		print("createAgent result: \(agentData)")
+		
+		// WE MAY ADD RESPONSE MODELS LATER AND ADD JSON DECODING
 		
 		//print("response data:\(jsonData)")
 		
@@ -251,92 +298,130 @@ public struct SuperagentSDK {
 		//print("JsonDataEncoded \(jsonDataEncoded)")
 		//let agent = try decoder.decode(Agent.self, from: jsonDataEncoded)
 		
-		print("returned Agent: \(agent)")
+		//print("returned Agent: \(agent)")
 		
-		return agent	
+		return agentData
 	}
+	
 
 	///Create a new prediction
-	public func createPrediction(id: String,
-						  input: String,
-						  hasStreaming: Bool) async throws -> [String: Any] {
-		let payload: [String: Any] = ["name": input,
-									  "has_Streaming": hasStreaming]
-		let data = try await request(method: .post, endpoint: "/agents\(id)", data: payload)
-		guard let outputData = data as? [String: Any] else {
-			throw SuperagentError.failedToCreatePrompt
+	public func createPrediction(agentId: String, prediction: PredictAgent) async throws -> [String: Any] {
+		let payload: [String: Any] = ["input": prediction.input,
+									  "has_Streaming": prediction.hasStreaming as Any]
+		let data = try await request(method: .post, endpoint: "/agents\(agentId)", data: payload)
+		
+		guard let responseData = data as? [String: Any],
+			  let predictionData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("createPrediction result: \(predictionData)")
+		
+		return predictionData
 	}
 	
 	//Agent Documents
 	///Get all Documents from an Agent
-	public func getAgentDocuments() async throws -> [String: Any] {
-		do {
-			let data = try await request(method: .get, endpoint: "/agent-documents")
-			return data as? [String: Any] ?? [:]
-		} catch {
+	public func getAgentDocuments() async throws -> [[String: Any]] {
+		let data = try await request(method: .get, endpoint: "/agent-documents")
+		
+		guard let responseData = data as? [String: Any],
+			  let agentDocuments = responseData["data"] as? [[String: Any]] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
+		
+		print("getAgentDocuments result: \(agentDocument)")
+		
+		return agentDocuments
 	}
 
 	///Add a Document to an Agent
 	public func createAgentDocument(documentId: String, agentId: String) async throws -> [String: Any] {
 		let payload: [String: Any] = ["documentId": documentId, "agentId": agentId]
 		let data = try await request(method: .post, endpoint: "/agents", data: payload)
-		guard let outputData = data as? [String: Any] else {
-			throw SuperagentError.failedToCreatePrompt
+		
+		guard let responseData = data as? [String: Any],
+			  let agentDocument = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("createAgentDocument result: \(agentDocument)")
+		
+		return agentDocument
 	}
 
 	///Delete a Document from an Agent
 	public func deleteAgentDocument(agentDocumentId: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/agent-documents/\(agentDocumentId)")
-		guard let outputData = data as? [String: Any] else {
-			throw SuperagentError.failedToCreatePrompt
+		
+		guard let responseData = data as? [String: Any],
+			  let agentDocument = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("deleteAgentDocument result: \(agentDocument)")
+		
+		return agentDocument
 	}
 
 	//Tools
 	///Returns a specific tool
 	public func getTool(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/tools/\(id)")
-		guard let outputData = data as? [String: Any] else {
+		
+		guard let responseData = data as? [String: Any],
+			  let toolData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("getTool result: \(toolData)")
+		
+		return toolData
 	}
 
 	///Delete tool
 	public func deleteTool(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/tools/\(id)")
-		guard let outputData = data as? [String: Any] else {
+		
+		guard let responseData = data as? [String: Any],
+			  let toolData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("deleteTool result: \(toolData)")
+		
+		return toolData
 	}
 
 	///Lists all tools
-	public func listTools(id: String) async throws -> [String: Any] {
+	public func listTools(id: String) async throws -> [[String: Any]] {
 		let data = try await request(method: .get, endpoint: "/tools")
-		guard let outputData = data as? [String: Any] else {
+		
+		guard let responseData = data as? [String: Any],
+			  let toolData = responseData["data"] as? [[String: Any]] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("listTools result: \(toolData)")
+		
+		return toolData
 	}
 
 	///Create a new tool
-	public func createTool(name: String, type: String, metadata: Any? = nil) async throws -> [String: Any] {
-		var payload: [String: Any] = ["name": name, "type": type]
-		if let metadata = metadata {
+	public func createTool(tool: Tool) async throws -> [String: Any] {
+		var payload: [String: Any] = ["name": tool.name, "type": tool.type]
+		if let metadata = tool.metadata {
 			payload["metadata"] = metadata
 		}
 		let data = try await request(method: .post, endpoint: "/tools", data: payload)
-		guard let outputData = data as? [String: Any] else {
-			throw SuperagentError.failedToCreatePrompt
+		
+		guard let responseData = data as? [String: Any],
+			  let toolData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
 		}
-		return outputData
+		
+		print("createTool result: \(toolData)")
+		
+		return toolData
 	}
 }
