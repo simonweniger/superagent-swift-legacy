@@ -225,38 +225,35 @@ public struct SuperagentSDK {
 		}
 		return outputData
 	}
-
+	
 	///Create a new agent
-	public func createAgent(name: String,
-					 llm: Agent.LLM,
-					 type: String,
-					 hasMemory: Bool,
-					 promptId: String? = nil) async throws -> Agent {
-		let payload: [String: Any] = ["name": name,
-									  "llm": ["provider": llm.provider, "model": llm.model, "api_key": llm.apiKey],
-									  "type": type,
-									  "hasMemory": hasMemory,
-									  "promptId": promptId ?? ""]
+	public func createAgent(agent: Agent) async throws -> [String: Any] {
+		let payload: [String: Any] = ["name": agent.name,
+									  "llm": ["provider": agent.llm?.provider, "model": agent.llm?.model, "api_key": agent.llm?.apiKey],
+									  "type": agent.type,
+									  "hasMemory": agent.hasMemory as Any,
+									  "promptId": agent.promptId ?? ""]
 		let data = try await request(method: .post, endpoint: "/agents", data: payload)
 		
 		//print("response: \(data)")
+
 		
 		guard let responseData = data as? [String: Any],
-			  let jsonData = responseData["data"] as? [String: Any] else {
+			  let agent = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
-		print("response data:\(jsonData)")
+		//print("response data:\(jsonData)")
 		
-		let decoder = JSONDecoder()
-		let jsonDataEncoded = try JSONSerialization.data(withJSONObject: jsonData, options: [])
+		//let decoder = JSONDecoder()
+		//let jsonDataEncoded = try JSONSerialization.data(withJSONObject: jsonData, options: [])
 		
-		print("JsonDataEncoded \(jsonDataEncoded)")
-		let agent = try decoder.decode(Agent.self, from: jsonDataEncoded)
+		//print("JsonDataEncoded \(jsonDataEncoded)")
+		//let agent = try decoder.decode(Agent.self, from: jsonDataEncoded)
 		
-		print("returned Agent \(agent)")
+		print("returned Agent: \(agent)")
 		
-		return agent
+		return agent	
 	}
 
 	///Create a new prediction
