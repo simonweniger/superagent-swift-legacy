@@ -4,24 +4,22 @@
 import PackageDescription
 
 let package = Package(
-    name: "superagent",
-	platforms: [
-			.macOS(.v13),
-			.iOS(.v16)
-		],
+    name: "Superagent",
+	platforms: [.iOS(.v15), .macOS(.v12), .tvOS(.v15), .watchOS(.v8)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "superagent",
-            targets: ["superagent"]),
+            name: "Superagent",
+            targets: ["Superagent"]),
     ],
-    targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "superagent"),
-        .testTarget(
-            name: "superagentTests",
-            dependencies: ["superagent"]),
-    ]
+	targets: [
+			.target(
+				name: "Superagent"),
+			.testTarget(
+				name: "SuperagentTests",
+				dependencies: ["Superagent"]),
+		]
 )
+
+
+	

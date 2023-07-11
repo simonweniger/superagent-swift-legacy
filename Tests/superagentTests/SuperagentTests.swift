@@ -6,14 +6,14 @@
 //
 
 import XCTest
-@testable import superagent
+@testable import Superagent
 
 class SuperagentSdkTests: XCTestCase {
 
-	var superagentSDK: SuperagentSDK?
+	var superagentSDK: SuperagentAPI?
 
 	override func setUpWithError() throws {
-		superagentSDK = SuperagentSDK(authToken: "your_auth_token")
+		superagentSDK = SuperagentAPI(apiKey: "your_auth_token")
 	}
 
 	override func tearDownWithError() throws {
@@ -42,7 +42,7 @@ class SuperagentSdkTests: XCTestCase {
 		
 		Task{
 			do{
-				let result = try await (self.superagentSDK?.listPrompts(id: ""))
+				let result = try await (self.superagentSDK?.listPrompts())
 				XCTAssertNotNil(result, "List Prompts failed")
 				expectation.fulfill()
 			} catch{
@@ -110,7 +110,7 @@ class SuperagentSdkTests: XCTestCase {
 		
 		Task{
 			do{
-				let result = try await (self.superagentSDK?.listDocuments(id: ""))
+				let result = try await (self.superagentSDK?.listDocuments())
 				XCTAssertNotNil(result, "List Documents failed")
 				expectation.fulfill()
 			} catch{
@@ -128,8 +128,8 @@ class SuperagentSdkTests: XCTestCase {
 			do {
 				let name = "sample_name"
 				let url = URL(string: "https://www.example.com")!
-				let type = DocumentTypes.pdf
-				let result = try await (self.superagentSDK?.createDocument(name: name, url: url, type: type,authorization:nil,template: ""))
+				let type = "PDF"
+				let result = try await (self.superagentSDK?.createDocument(name: name, url: url, type: type,authorization:nil))
 				XCTAssertNotNil(result, "Create document failed")
 				expectation.fulfill()
 			} catch {
@@ -179,7 +179,7 @@ class SuperagentSdkTests: XCTestCase {
 		
 		Task{
 			do{
-				let result = try await (self.superagentSDK?.listAgents(id: ""))
+				let result = try await (self.superagentSDK?.listAgents())
 				XCTAssertNotNil(result, "List Agents failed")
 				expectation.fulfill()
 			} catch{
@@ -196,7 +196,7 @@ class SuperagentSdkTests: XCTestCase {
 		Task {
 			do {
 				let name = "sample_name"
-				let llm = LLMModel(provider: .openai, model: "sample_model", apiKey: "sample_key")
+				let llm = {provider: "OPENAI", model: "gpt-3.5", apiKey: "sample_key"}
 				let hasMemory = false
 				
 				let result = try await (self.superagentSDK?.createAgent(name: name, llm: llm, type: .openai, hasMemory: hasMemory, promptId: nil))
@@ -249,7 +249,7 @@ class SuperagentSdkTests: XCTestCase {
 		
 		Task{
 			do{
-				let result = try await (self.superagentSDK?.listTools(id: ""))
+				let result = try await (self.superagentSDK?.listTools())
 				XCTAssertNotNil(result, "List Tools failed")
 				expectation.fulfill()
 			} catch{
@@ -266,7 +266,7 @@ class SuperagentSdkTests: XCTestCase {
 		Task {
 			do {
 				let name = "sample_name"
-				let type = ToolTypes.search
+				let type = "search"
 				
 				let result = try await (self.superagentSDK?.createTool(name: name, type: type, metadata: nil))
 				
