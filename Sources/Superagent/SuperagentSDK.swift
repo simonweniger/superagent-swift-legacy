@@ -120,7 +120,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
-		print("listPrompts result: \(promptData)")
+		print("listPrompts result: \(promptsData)")
 		
 		//let decoder = JSONDecoder()
 		//var prompts = [Prompt]()
@@ -159,7 +159,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
-		print("createPrompt result: \(documentData)")
+		print("createPrompt result: \(promptData)")
 		
 		return promptData
 	}
