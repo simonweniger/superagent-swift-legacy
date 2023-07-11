@@ -26,12 +26,12 @@ enum SuperagentError: Error {
 public struct SuperagentSDK {
 	
 	public var baseUrl: String
-	public var authToken: String
+	public var apiKey: String
 	
 	// init auth and api url
-	public init(authToken: String) {
+	public init(apiKey: String) {
 		self.baseUrl = "https://api.superagent.sh/api/v1"
-		self.authToken = authToken
+		self.apiKey = apiKey
 	}
 	
 	//createRequest
@@ -43,7 +43,7 @@ public struct SuperagentSDK {
 		var request = URLRequest(url: url)
 		request.httpMethod = method.rawValue.uppercased()
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-		request.addValue("Bearer \(self.authToken)", forHTTPHeaderField: "Authorization")
+		request.addValue("Bearer \(self.apiKey)", forHTTPHeaderField: "Authorization")
 		
 		if let data = data {
 			if method == .get {
@@ -58,7 +58,7 @@ public struct SuperagentSDK {
 				request.httpBody = jsonData
 				
 				if data.keys.contains("input") {
-					request.setValue(self.authToken, forHTTPHeaderField: "X-SUPERAGENT-API-KEY")
+					request.setValue(self.apiKey, forHTTPHeaderField: "X-SUPERAGENT-API-KEY")
 				}
 			}
 		}
@@ -239,14 +239,22 @@ public struct SuperagentSDK {
 									  "promptId": promptId ?? ""]
 		let data = try await request(method: .post, endpoint: "/agents", data: payload)
 		
+		//print("response: \(data)")
+		
 		guard let responseData = data as? [String: Any],
 			  let jsonData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
+		print("response data:\(jsonData)")
+		
 		let decoder = JSONDecoder()
 		let jsonDataEncoded = try JSONSerialization.data(withJSONObject: jsonData, options: [])
+		
+		print("JsonDataEncoded \(jsonDataEncoded)")
 		let agent = try decoder.decode(Agent.self, from: jsonDataEncoded)
+		
+		print("returned Agent \(agent)")
 		
 		return agent
 	}
