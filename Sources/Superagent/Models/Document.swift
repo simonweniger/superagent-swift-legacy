@@ -17,9 +17,9 @@ public struct Document {
     public var metadata: Any?
     public var fromPage: Int?
     public var toPage: Int?
-    public var splitter: Any?
+    public var splitter: Splitter?
 
-    public init(type: String, url: String? = nil, name: String, authorization: Any? = nil, metadata: Any? = nil, fromPage: Int? = nil, toPage: Int? = nil, splitter: Any? = nil) {
+    public init(type: String, url: String? = nil, name: String, authorization: Any? = nil, metadata: Any? = nil, fromPage: Int? = nil, toPage: Int? = nil, splitter: Splitter? = nil) {
         self.type = type
         self.url = url
         self.name = name
@@ -40,5 +40,21 @@ public struct Document {
         case toPage = "to_page"
         case splitter
     }
+	
+	public struct Splitter: Codable {
+			public var type: String
+			public var chunkSize: Int
+			public var chunkOverlap: Int
 
+			public init(type: String, chunkSize: Int, chunkOverlap: Int) {
+				self.type = type
+				self.chunkSize = chunkSize
+				self.chunkOverlap = chunkOverlap
+			}
+		public enum CodingKeys: String, CodingKey {
+			case type
+			case chunkSize = "chunk_size"
+			case chunkOverlap = "chunk_overlap"
+		}
+		}
 }
