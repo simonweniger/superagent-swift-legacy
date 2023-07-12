@@ -112,7 +112,7 @@ public struct SuperagentSDK {
 	}
 	
 	///Lists all prompts
-	public func listPrompts(id: String) async throws -> [[String: Any]] {
+	public func listPrompts() async throws -> [[String: Any]] {
 		let data = try await request(method: .get, endpoint: "/prompts")
 		
 		guard let responseData = data as? [String: Any],
@@ -194,7 +194,7 @@ public struct SuperagentSDK {
 	}
 
 	///Lists all documents
-	public func listDocuments(id: String) async throws -> [String: Any] {
+	public func listDocuments() async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/documents")
 		
 		guard let responseData = data as? [String: Any],
@@ -210,6 +210,7 @@ public struct SuperagentSDK {
 	///Create a new document
 	public func createDocument(document: Document) async throws -> [String: Any] {
 		let payload: [String: Any] = ["name": document.name,
+									  "splitter": ["type": document.splitter?.type as Any, "chunk_size": document.splitter?.chunkSize as Any, "chunk_overlap": document.splitter?.chunkOverlap as Any],
 									  "url": document.url as Any,
 									  "type": document.type,
 									  "authorization": document.authorization as Any]
@@ -259,7 +260,7 @@ public struct SuperagentSDK {
 	}
 
 	///Lists all agents
-	public func listAgents(id: String) async throws -> [String: Any] {
+	public func listAgents() async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/agents")
 		
 		guard let responseData = data as? [String: Any],
@@ -322,7 +323,7 @@ public struct SuperagentSDK {
 	
 	//Agent Documents
 	///Get all Documents from an Agent
-	public func getAgentDocuments() async throws -> [[String: Any]] {
+	public func listAgentDocuments() async throws -> [[String: Any]] {
 		let data = try await request(method: .get, endpoint: "/agent-documents")
 		
 		guard let responseData = data as? [String: Any],
@@ -334,9 +335,23 @@ public struct SuperagentSDK {
 		
 		return agentDocuments
 	}
+	
+	///Get all Documents from an Agent
+	public func getAgentDocument(agentDocumentId: String) async throws -> [String: Any] {
+		let data = try await request(method: .get, endpoint: "/agent-documents\(agentDocumentId)")
+		
+		guard let responseData = data as? [String: Any],
+			  let agentDocument = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+		
+		print("getAgentDocuments result: \(agentDocument)")
+		
+		return agentDocument
+	}
 
 	///Add a Document to an Agent
-	public func createAgentDocument(documentId: String, agentId: String) async throws -> [String: Any] {
+	public func addDocumentToAgent(documentId: String, agentId: String) async throws -> [String: Any] {
 		let payload: [String: Any] = ["documentId": documentId, "agentId": agentId]
 		let data = try await request(method: .post, endpoint: "/agents", data: payload)
 		
@@ -366,7 +381,21 @@ public struct SuperagentSDK {
 
 	//Agent Tools
 	///Get all Tools from an Agent
-	public func getAgentTools() async throws -> [[String: Any]] {
+	public func listAgentTools(agentToolId: String) async throws -> [String: Any] {
+		let data = try await request(method: .get, endpoint: "/agent-tools/\(agentToolId)")
+		
+		guard let responseData = data as? [String: Any],
+			  let agentTool = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+		
+		print("getAgentTools result: \(agentTool)")
+		
+		return agentTool
+	}
+	
+	///Get all Tools from an Agent
+	public func getAgentTool() async throws -> [[String: Any]] {
 		let data = try await request(method: .get, endpoint: "/agent-tools")
 		
 		guard let responseData = data as? [String: Any],
@@ -438,7 +467,7 @@ public struct SuperagentSDK {
 	}
 
 	///Lists all tools
-	public func listTools(id: String) async throws -> [[String: Any]] {
+	public func listTools() async throws -> [[String: Any]] {
 		let data = try await request(method: .get, endpoint: "/tools")
 		
 		guard let responseData = data as? [String: Any],
