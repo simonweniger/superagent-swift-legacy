@@ -15,8 +15,8 @@ Pod::Spec.new do |spec|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  spec.name         = "Superagent"
-  spec.version      = "0.0.8"
+  spec.name         = "superagent"
+  spec.version      = "0.1.0"
   spec.summary      = "Build, deploy, and manage LLM-powered agents on  platforms."
 
   # This description is used to generate tags and improve search results.
@@ -80,7 +80,5 @@ Pod::Spec.new do |spec|
   spec.source_files  = "Sources/**/*.{swift}"
   # spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
   # spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-  
-  spec.dependency 'Alamofire', '~> 4.9.0'
 
 end
