@@ -17,6 +17,10 @@ Please submit any issues you encounter, join the superagent community, or reach 
 
 If you are looking for a plug-and-play way to get started be sure to checkout [Superagent.sh](https://Superagent.sh).
 
+## Documentation
+
+You can find the full [documentation here](https://superagent-swift-docs.vercel.app/)
+
 ## 🚧 Roadmap
 
 You can follow the [roadmap here](https://github.com/users/homanp/projects/4)
@@ -55,9 +59,4 @@ A prompt is piece of text that gives context to the LLM. It can contain instruct
 Common examples of input_variables are `human_input`, `question` and `chat_history` for in context memory.
 
 
-## Documentation
-
-You can find the full [documentation here](https://superagent-swift-docs.vercel.app/)
-
-[**Documentation**](https://arxiv.org/pdf/2210.03629.pdf)
-
+[**Documentation**](https://superagent-swift-docs.vercel.app/)
