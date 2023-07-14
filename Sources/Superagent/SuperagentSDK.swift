@@ -312,6 +312,7 @@ public struct SuperagentSDK {
 									  "has_Streaming": prediction.hasStreaming as Any]
 		print("Prediction payload: \(payload)")
 		let data = try await request(method: .post, endpoint: "/agents\(agentId)/predict", data: payload)
+		print("Prediction data:\(data)")
 		guard let responseData = data as? [String: Any],
 			  let predictionData = responseData["data"] as? String else {
 			throw SuperagentError.failedToRetrievePrompt
