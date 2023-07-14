@@ -306,13 +306,13 @@ public struct SuperagentSDK {
 	
 
 	///Create a new prediction
-	public func createPrediction(agentId: String, prediction: PredictAgent) async throws -> [String: Any] {
+	public func createPrediction(agentId: String, prediction: PredictAgent) async throws -> String {
 		let payload: [String: Any] = ["input": prediction.input,
 									  "has_Streaming": prediction.hasStreaming as Any]
 		let data = try await request(method: .post, endpoint: "/agents\(agentId)", data: payload)
 		
 		guard let responseData = data as? [String: Any],
-			  let predictionData = responseData["data"] as? [String: Any] else {
+			  let predictionData = responseData["data"] as? String else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
