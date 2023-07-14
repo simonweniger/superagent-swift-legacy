@@ -309,7 +309,7 @@ public struct SuperagentSDK {
 	public func createPrediction(agentId: String, prediction: PredictAgent) async throws -> String {
 		let payload: [String: Any] = ["input": prediction.input,
 									  "has_Streaming": prediction.hasStreaming as Any]
-		let data = try await request(method: .post, endpoint: "/agents\(agentId)", data: payload)
+		let data = try await request(method: .post, endpoint: "/agents\(agentId)/predict", data: payload)
 		
 		guard let responseData = data as? [String: Any],
 			  let predictionData = responseData["data"] as? String else {
