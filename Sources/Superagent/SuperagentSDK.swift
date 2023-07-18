@@ -312,16 +312,17 @@ public struct SuperagentSDK {
 									  "has_Streaming": prediction.hasStreaming as Any]
 		//print("Prediction payload: \(payload)")
 		let data = try await request(method: .post, endpoint: "/agents/\(agentId)/predict", data: payload)
-		#if DEBUG
+#if DEBUG
 		print("Prediction data:\(data)")
-		#endif
+#endif
 		guard let responseData = data as? [String: Any],
 			  let predictionData = responseData["data"] as? String else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
 		
+#if DEBUG
 		print("createPrediction result: \(predictionData)")
-		
+#endif
 		return predictionData
 	}
 	
@@ -334,9 +335,9 @@ public struct SuperagentSDK {
 			  let agentDocuments = responseData["data"] as? [[String: Any]] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("getAgentDocuments result: \(agentDocuments)")
-		
+#endif
 		return agentDocuments
 	}
 	
@@ -348,9 +349,9 @@ public struct SuperagentSDK {
 			  let agentDocument = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("getAgentDocuments result: \(agentDocument)")
-		
+#endif
 		return agentDocument
 	}
 
@@ -363,9 +364,9 @@ public struct SuperagentSDK {
 			  let agentDocument = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("createAgentDocument result: \(agentDocument)")
-		
+#endif
 		return agentDocument
 	}
 
@@ -377,9 +378,9 @@ public struct SuperagentSDK {
 			  let agentDocument = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("deleteAgentDocument result: \(agentDocument)")
-		
+#endif
 		return agentDocument
 	}
 
@@ -392,9 +393,9 @@ public struct SuperagentSDK {
 			  let agentTool = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("getAgentTools result: \(agentTool)")
-		
+#endif
 		return agentTool
 	}
 	
@@ -406,9 +407,9 @@ public struct SuperagentSDK {
 			  let agentTools = responseData["data"] as? [[String: Any]] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("getAgentTools result: \(agentTools)")
-		
+#endif
 		return agentTools
 	}
 
@@ -421,9 +422,9 @@ public struct SuperagentSDK {
 			  let agentToolData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("addToolToAgent result: \(agentToolData)")
-		
+#endif
 		return agentToolData
 	}
 
@@ -435,9 +436,9 @@ public struct SuperagentSDK {
 			  let success = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("deleteAgentTool result: \(success)")
-		
+#endif
 		return success
 	}
 	
@@ -450,9 +451,9 @@ public struct SuperagentSDK {
 			  let toolData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("getTool result: \(toolData)")
-		
+#endif
 		return toolData
 	}
 
@@ -464,9 +465,9 @@ public struct SuperagentSDK {
 			  let toolData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("deleteTool result: \(toolData)")
-		
+#endif
 		return toolData
 	}
 
@@ -478,9 +479,9 @@ public struct SuperagentSDK {
 			  let toolData = responseData["data"] as? [[String: Any]] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("listTools result: \(toolData)")
-		
+#endif
 		return toolData
 	}
 
@@ -496,9 +497,9 @@ public struct SuperagentSDK {
 			  let toolData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("createTool result: \(toolData)")
-		
+#endif
 		return toolData
 	}
 }
