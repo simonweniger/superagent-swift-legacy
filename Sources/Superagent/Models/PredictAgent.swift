@@ -10,10 +10,10 @@ import Foundation
 
 public struct PredictAgent {
 
-	public var input: [[String:String]]
+	public var input: [String:String]
     public var hasStreaming: Bool?
 
-    public init(input: [[String:String]], hasStreaming: Bool? = nil) {
+    public init(input: [String:String], hasStreaming: Bool? = nil) {
         self.input = input
         self.hasStreaming = hasStreaming
     }
