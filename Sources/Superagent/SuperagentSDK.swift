@@ -29,8 +29,8 @@ public struct SuperagentSDK {
 	public var apiKey: String
 	
 	// init auth and api url
-	public init(apiKey: String) {
-		self.baseUrl = "https://api.superagent.sh/api/v1"
+	public init(apiKey: String, apiUrl: String?) {
+		self.baseUrl = apiUrl ?? "https://api.superagent.sh/api/v1"
 		self.apiKey = apiKey
 	}
 	
@@ -286,9 +286,9 @@ public struct SuperagentSDK {
 			  let agentData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("createAgent result: \(agentData)")
-		
+#endif
 		// WE MAY ADD RESPONSE MODELS LATER AND ADD JSON DECODING
 		
 		//print("response data:\(jsonData)")
@@ -310,11 +310,13 @@ public struct SuperagentSDK {
 		//print("create Prediction called")
 		let payload: [String: Any] = ["input": prediction.input,
 									  "has_Streaming": prediction.hasStreaming as Any]
+#if DEBUG
 		print("Prediction payload: \(payload)")
+#endif
 		let data = try await request(method: .post, endpoint: "/agents/\(agentId)/predict", data: payload)
-
+#if DEBUG
 		print("Prediction data:\(data)")
-
+#endif
 		guard let responseData = data as? [String: Any],
 			  let predictionData = responseData["data"] as? String else {
 			throw SuperagentError.failedToRetrievePrompt
@@ -499,4 +501,79 @@ public struct SuperagentSDK {
 #endif
 		return toolData
 	}
+	
+	//Tags
+	///Returns a specific tag
+	public func getTag(id: String) async throws -> [String: Any] {
+		let data = try await request(method: .get, endpoint: "/tags/\(id)")
+		
+		guard let responseData = data as? [String: Any],
+			  let tagData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("getTag result: \(tagData)")
+#endif
+		return tagData
+	}
+
+	///Delete tool
+	public func deleteTag(id: String) async throws -> [String: Any] {
+		let data = try await request(method: .delete, endpoint: "/tags/\(id)")
+		
+		guard let responseData = data as? [String: Any],
+			  let tagData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("deleteTag result: \(tagData)")
+#endif
+		return tagData
+	}
+
+	///Lists all tools
+	public func listTags() async throws -> [[String: Any]] {
+		let data = try await request(method: .get, endpoint: "/tags")
+		
+		guard let responseData = data as? [String: Any],
+			  let tagsData = responseData["data"] as? [[String: Any]] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("listTagss result: \(tagsData)")
+#endif
+		return tagsData
+	}
+
+	///Create a new tool
+	public func createTag(tag: Tag) async throws -> [String: Any] {
+		var payload: [String: Any] = ["name": tag.name, "type": tag.color, "userId": tag.userId ?? ""]
+		let data = try await request(method: .post, endpoint: "/tags", data: payload)
+		
+		guard let responseData = data as? [String: Any],
+			  let tagData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("createTag result: \(tagData)")
+#endif
+		return tagData
+	}
+	
+	///Patch a new tool
+	public func updateTag(id: String, tag: Tag) async throws -> [String: Any] {
+		var payload: [String: Any] = ["name": tag.name, "type": tag.color]
+		let data = try await request(method: .post, endpoint: "/tags/\(id)", data: payload)
+		
+		guard let responseData = data as? [String: Any],
+			  let tagData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("updateTag result: \(tagData)")
+#endif
+		return tagData
+	}
+	
+	
 }
