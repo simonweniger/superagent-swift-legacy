@@ -325,6 +325,22 @@ public struct SuperagentSDK {
 		return predictionData
 	}
 	
+	//Agent Library
+	///Get all Agents from the Library
+	public func listLibraryAgents() async throws -> [[String: Any]] {
+		let data = try await request(method: .get, endpoint: "/agents/library")
+		
+		guard let responseData = data as? [String: Any],
+			  let agentLibrary = responseData["data"] as? [[String: Any]] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("getAgentDocuments result: \(agentLibrary)")
+#endif
+		return agentLibrary
+	}
+	
+	
 	//Agent Documents
 	///Get all Documents from an Agent
 	public func listAgentDocuments() async throws -> [[String: Any]] {
