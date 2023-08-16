@@ -29,8 +29,8 @@ public struct SuperagentSDK {
 	public var apiKey: String
 	
 	// init auth and api url
-	public init(apiKey: String) {
-		self.baseUrl = "https://api.superagent.sh/api/v1"
+	public init(apiKey: String, apiUrl: String?) {
+		self.baseUrl = apiUrl ?? "https://api.superagent.sh/api/v1"
 		self.apiKey = apiKey
 	}
 	
@@ -286,9 +286,9 @@ public struct SuperagentSDK {
 			  let agentData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("createAgent result: \(agentData)")
-		
+#endif
 		// WE MAY ADD RESPONSE MODELS LATER AND ADD JSON DECODING
 		
 		//print("response data:\(jsonData)")
@@ -310,20 +310,36 @@ public struct SuperagentSDK {
 		//print("create Prediction called")
 		let payload: [String: Any] = ["input": prediction.input,
 									  "has_Streaming": prediction.hasStreaming as Any]
-		//print("Prediction payload: \(payload)")
+#if DEBUG
+		print("Prediction payload: \(payload)")
+#endif
 		let data = try await request(method: .post, endpoint: "/agents/\(agentId)/predict", data: payload)
-		#if DEBUG
+#if DEBUG
 		print("Prediction data:\(data)")
-		#endif
+#endif
 		guard let responseData = data as? [String: Any],
 			  let predictionData = responseData["data"] as? String else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
 		print("createPrediction result: \(predictionData)")
-		
 		return predictionData
 	}
+	
+	//Agent Library
+	///Get all Agents from the Library
+	public func listLibraryAgents() async throws -> [[String: Any]] {
+		let data = try await request(method: .get, endpoint: "/agents/library")
+		
+		guard let responseData = data as? [String: Any],
+			  let agentLibrary = responseData["data"] as? [[String: Any]] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("getAgentDocuments result: \(agentLibrary)")
+#endif
+		return agentLibrary
+	}
+	
 	
 	//Agent Documents
 	///Get all Documents from an Agent
@@ -334,9 +350,9 @@ public struct SuperagentSDK {
 			  let agentDocuments = responseData["data"] as? [[String: Any]] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("getAgentDocuments result: \(agentDocuments)")
-		
+#endif
 		return agentDocuments
 	}
 	
@@ -348,9 +364,9 @@ public struct SuperagentSDK {
 			  let agentDocument = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("getAgentDocuments result: \(agentDocument)")
-		
+#endif
 		return agentDocument
 	}
 
@@ -363,9 +379,9 @@ public struct SuperagentSDK {
 			  let agentDocument = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("createAgentDocument result: \(agentDocument)")
-		
+#endif
 		return agentDocument
 	}
 
@@ -377,9 +393,9 @@ public struct SuperagentSDK {
 			  let agentDocument = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("deleteAgentDocument result: \(agentDocument)")
-		
+#endif
 		return agentDocument
 	}
 
@@ -392,9 +408,9 @@ public struct SuperagentSDK {
 			  let agentTool = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("getAgentTools result: \(agentTool)")
-		
+#endif
 		return agentTool
 	}
 	
@@ -406,9 +422,9 @@ public struct SuperagentSDK {
 			  let agentTools = responseData["data"] as? [[String: Any]] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("getAgentTools result: \(agentTools)")
-		
+#endif
 		return agentTools
 	}
 
@@ -421,9 +437,9 @@ public struct SuperagentSDK {
 			  let agentToolData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("addToolToAgent result: \(agentToolData)")
-		
+#endif
 		return agentToolData
 	}
 
@@ -435,9 +451,9 @@ public struct SuperagentSDK {
 			  let success = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("deleteAgentTool result: \(success)")
-		
+#endif
 		return success
 	}
 	
@@ -450,9 +466,9 @@ public struct SuperagentSDK {
 			  let toolData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("getTool result: \(toolData)")
-		
+#endif
 		return toolData
 	}
 
@@ -464,9 +480,9 @@ public struct SuperagentSDK {
 			  let toolData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("deleteTool result: \(toolData)")
-		
+#endif
 		return toolData
 	}
 
@@ -478,9 +494,9 @@ public struct SuperagentSDK {
 			  let toolData = responseData["data"] as? [[String: Any]] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("listTools result: \(toolData)")
-		
+#endif
 		return toolData
 	}
 
@@ -496,9 +512,84 @@ public struct SuperagentSDK {
 			  let toolData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrievePrompt
 		}
-		
+#if DEBUG
 		print("createTool result: \(toolData)")
-		
+#endif
 		return toolData
 	}
+	
+	//Tags
+	///Returns a specific tag
+	public func getTag(id: String) async throws -> [String: Any] {
+		let data = try await request(method: .get, endpoint: "/tags/\(id)")
+		
+		guard let responseData = data as? [String: Any],
+			  let tagData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("getTag result: \(tagData)")
+#endif
+		return tagData
+	}
+
+	///Delete tool
+	public func deleteTag(id: String) async throws -> [String: Any] {
+		let data = try await request(method: .delete, endpoint: "/tags/\(id)")
+		
+		guard let responseData = data as? [String: Any],
+			  let tagData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("deleteTag result: \(tagData)")
+#endif
+		return tagData
+	}
+
+	///Lists all tools
+	public func listTags() async throws -> [[String: Any]] {
+		let data = try await request(method: .get, endpoint: "/tags")
+		
+		guard let responseData = data as? [String: Any],
+			  let tagsData = responseData["data"] as? [[String: Any]] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("listTagss result: \(tagsData)")
+#endif
+		return tagsData
+	}
+
+	///Create a new tool
+	public func createTag(tag: Tag) async throws -> [String: Any] {
+		var payload: [String: Any] = ["name": tag.name, "type": tag.color, "userId": tag.userId ?? ""]
+		let data = try await request(method: .post, endpoint: "/tags", data: payload)
+		
+		guard let responseData = data as? [String: Any],
+			  let tagData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("createTag result: \(tagData)")
+#endif
+		return tagData
+	}
+	
+	///Patch a new tool
+	public func updateTag(id: String, tag: Tag) async throws -> [String: Any] {
+		var payload: [String: Any] = ["name": tag.name, "type": tag.color]
+		let data = try await request(method: .post, endpoint: "/tags/\(id)", data: payload)
+		
+		guard let responseData = data as? [String: Any],
+			  let tagData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrievePrompt
+		}
+#if DEBUG
+		print("updateTag result: \(tagData)")
+#endif
+		return tagData
+	}
+	
+	
 }
