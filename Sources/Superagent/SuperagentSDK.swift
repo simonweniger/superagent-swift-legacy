@@ -17,9 +17,9 @@ enum HttpMethod: String {
 enum SuperagentError: Error {
 	case invalidResponse
 	case requestFailed
-	case failedToRetrievePrompt
-	case failedToUpdatePrompt
-	case failedToCreatePrompt
+	case failedToRetrieve
+	case failedToUpdate
+	case failedToCreate
 }
 
 @available(macOS 12.0, *)
@@ -86,7 +86,7 @@ public struct SuperagentSDK {
 		let data = try await request(method: .get, endpoint: "/prompts/\(id)")
 		guard let responseData = data as? [String: Any],
 			  let promptData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
 		print("getPrompt result: \(promptData)")
@@ -103,7 +103,7 @@ public struct SuperagentSDK {
 		let data = try await request(method: .delete, endpoint: "/prompts/\(id)")
 		guard let responseData = data as? [String: Any],
 			  let success = responseData["success"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
 		print("deletePrompt result: \(success)")
@@ -117,7 +117,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let promptsData = responseData["data"] as? [[String: Any]] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
 		print("listPrompts result: \(promptsData)")
@@ -134,14 +134,14 @@ public struct SuperagentSDK {
 		return promptsData
 	}
 	
-	///Update a specific prompt
+	///Patch a specific prompt
 	public func updatePrompt(promptId: String, newPrompt: Prompt) async throws -> [String: Any] {
 		let payload: [String: Any] = ["name": newPrompt.name, "input_variables": newPrompt.inputVariables, "template": newPrompt.template]
 		let data = try await request(method: .patch, endpoint: "/prompts/\(promptId)", data: payload)
 		
 		guard let responseData = data as? [String: Any],
 			  let promptData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
 		print("updatePrompt result: \(promptData)")
@@ -156,7 +156,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let promptData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
 		print("createPrompt result: \(promptData)")
@@ -171,7 +171,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let documentData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
 		print("getDocument result: \(documentData)")
@@ -185,7 +185,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let documentData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
 		print("deleteDocument result: \(documentData)")
@@ -199,7 +199,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let documentData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
 		print("listDocuments result: \(documentData)")
@@ -218,10 +218,34 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let documentData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
+#if DEBUG
 		print("createDocument result: \(documentData)")
+#endif
+		
+		return documentData
+	}
+	
+	///Patch a document
+	public func updateDocument(id: String, document: Document) async throws -> [String: Any] {
+		let payload: [String: Any] = ["name": document.name,
+									 "splitter": ["type": document.splitter?.type as Any, "chunk_size": document.splitter?.chunkSize as Any, "chunk_overlap": document.splitter?.chunkOverlap as Any],
+									 "url": document.url as Any,
+									 "type": document.type,
+									 "authorization": document.authorization as Any]
+		let data = try await request(method: .patch, endpoint: "/documents/\(id)", data: payload)
+		
+		guard let responseData = data as? [String: Any],
+			  let documentData = responseData["data"] as? [String: Any] else {
+			throw SuperagentError.failedToRetrieve
+			
+		}
+		
+#if DEBUG
+		print("updateDocument result: \(documentData)")
+#endif
 		
 		return documentData
 	}
@@ -233,10 +257,12 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
+#if DEBUG
 		print("getAgent result: \(agentData)")
+#endif
 		
 		//let decoder = JSONDecoder()
 		//let jsonDataEncoded = try JSONSerialization.data(withJSONObject: jsonData, options: [])
@@ -251,10 +277,12 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
+#if DEBUG
 		print("deleteAgent result: \(agentData)")
+#endif
 		
 		return agentData
 	}
@@ -265,10 +293,12 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		
+#if DEBUG
 		print("listAgents result: \(agentData)")
+#endif
 		
 		return agentData
 	}
@@ -284,7 +314,7 @@ public struct SuperagentSDK {
 
 		guard let responseData = data as? [String: Any],
 			  let agentData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("createAgent result: \(agentData)")
@@ -319,7 +349,7 @@ public struct SuperagentSDK {
 #endif
 		guard let responseData = data as? [String: Any],
 			  let predictionData = responseData["data"] as? String else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 		print("createPrediction result: \(predictionData)")
 		return predictionData
@@ -332,7 +362,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentLibrary = responseData["data"] as? [[String: Any]] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("getAgentDocuments result: \(agentLibrary)")
@@ -348,7 +378,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentDocuments = responseData["data"] as? [[String: Any]] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("getAgentDocuments result: \(agentDocuments)")
@@ -362,7 +392,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentDocument = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("getAgentDocuments result: \(agentDocument)")
@@ -377,7 +407,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentDocument = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToCreate
 		}
 #if DEBUG
 		print("createAgentDocument result: \(agentDocument)")
@@ -391,7 +421,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentDocument = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("deleteAgentDocument result: \(agentDocument)")
@@ -406,7 +436,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentTool = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("getAgentTools result: \(agentTool)")
@@ -420,7 +450,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentTools = responseData["data"] as? [[String: Any]] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("getAgentTools result: \(agentTools)")
@@ -435,7 +465,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let agentToolData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToUpdate
 		}
 #if DEBUG
 		print("addToolToAgent result: \(agentToolData)")
@@ -449,7 +479,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let success = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.requestFailed
 		}
 #if DEBUG
 		print("deleteAgentTool result: \(success)")
@@ -464,7 +494,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let toolData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("getTool result: \(toolData)")
@@ -478,7 +508,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let toolData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.requestFailed
 		}
 #if DEBUG
 		print("deleteTool result: \(toolData)")
@@ -492,7 +522,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let toolData = responseData["data"] as? [[String: Any]] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("listTools result: \(toolData)")
@@ -510,7 +540,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let toolData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToCreate
 		}
 #if DEBUG
 		print("createTool result: \(toolData)")
@@ -525,7 +555,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let tagData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("getTag result: \(tagData)")
@@ -539,7 +569,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let tagData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.requestFailed
 		}
 #if DEBUG
 		print("deleteTag result: \(tagData)")
@@ -553,7 +583,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let tagsData = responseData["data"] as? [[String: Any]] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
 		print("listTagss result: \(tagsData)")
@@ -568,7 +598,7 @@ public struct SuperagentSDK {
 		
 		guard let responseData = data as? [String: Any],
 			  let tagData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToCreate
 		}
 #if DEBUG
 		print("createTag result: \(tagData)")
@@ -576,14 +606,14 @@ public struct SuperagentSDK {
 		return tagData
 	}
 	
-	///Patch a new tool
-	public func updateTag(id: String, tag: Tag) async throws -> [String: Any] {
-		var payload: [String: Any] = ["name": tag.name, "type": tag.color]
+	///Patch a tag
+	public func updateTag(id: String, newTag: Tag) async throws -> [String: Any] {
+		var payload: [String: Any] = ["name": newTag.name, "type": newTag.color]
 		let data = try await request(method: .post, endpoint: "/tags/\(id)", data: payload)
 		
 		guard let responseData = data as? [String: Any],
 			  let tagData = responseData["data"] as? [String: Any] else {
-			throw SuperagentError.failedToRetrievePrompt
+			throw SuperagentError.failedToUpdate
 		}
 #if DEBUG
 		print("updateTag result: \(tagData)")
