@@ -352,7 +352,30 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 		print("createPrediction result: \(predictionData)")
-		return predictionData
+		if prediction.hasStreaming == true {
+			return predictionData
+		} else {
+			return AsyncThrowingStream<String, Error> {  continuation in
+				Task(priority: .userInitiated) { [weak self] in
+					do {
+						var responseText = ""
+						for try await line in (responseData["data"]?) {
+							if line.hasPrefix("data: "),
+							   let data = line.dropFirst(6).data(using: .utf8),
+							   let response = try? self?.jsonDecoder.decode(StreamCompletionResponse.self, from: data),
+							   let text = response.choices.first?.delta.content {
+								responseText += text
+								continuation.yield(text)
+							}
+						}
+						continuation.finish()
+					} catch {
+						continuation.finish(throwing: error)
+					}
+				}
+			}
+		}
+		
 	}
 	
 	//Agent Library
