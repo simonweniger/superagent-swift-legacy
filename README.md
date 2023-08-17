@@ -11,6 +11,8 @@ To get your API key head over to [superagent.sh](https://superagent.sh) or fork 
 
 Learn more about Superagent on the main repo: [Superagent Repo](https://github.com/homanp/superagent)
 
+![create-agent](https://github.com/simonweniger/superagent-swift/assets/43147663/83a8045d-6ab9-46a8-8ccb-e8a2de097a48)
+
 Please submit any issues you encounter, join the superagent community, or reach out to [me](https://simonweniger.com) to talk about LLM applications on  platforms.
 
 ## 🥷 Superagent Cloud
