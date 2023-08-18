@@ -89,7 +89,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 		
-		print("getPrompt result: \(promptData)")
+		Swift.print("getPrompt result: \(promptData)")
 		
 		//let decoder = JSONDecoder()
 		//let jsonDataEncoded = try JSONSerialization.data(withJSONObject: jsonData, options: [])
@@ -106,7 +106,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 		
-		print("deletePrompt result: \(success)")
+		Swift.print("deletePrompt result: \(success)")
 		
 		return success
 	}
@@ -120,7 +120,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 		
-		print("listPrompts result: \(promptsData)")
+		Swift.print("listPrompts result: \(promptsData)")
 		
 		//let decoder = JSONDecoder()
 		//var prompts = [Prompt]()
@@ -144,7 +144,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 		
-		print("updatePrompt result: \(promptData)")
+		Swift.print("updatePrompt result: \(promptData)")
 		
 		return promptData
 	}
@@ -159,7 +159,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 		
-		print("createPrompt result: \(promptData)")
+		Swift.print("createPrompt result: \(promptData)")
 		
 		return promptData
 	}
@@ -174,7 +174,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 		
-		print("getDocument result: \(documentData)")
+		Swift.print("getDocument result: \(documentData)")
 		
 		return documentData
 	}
@@ -188,7 +188,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 		
-		print("deleteDocument result: \(documentData)")
+		Swift.print("deleteDocument result: \(documentData)")
 		
 		return documentData
 	}
@@ -202,7 +202,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 		
-		print("listDocuments result: \(documentData)")
+		Swift.print("listDocuments result: \(documentData)")
 		
 		return documentData
 	}
@@ -224,7 +224,7 @@ public struct SuperagentSDK {
 		}
 		
 #if DEBUG
-		print("createDocument result: \(documentData)")
+		Swift.print("createDocument result: \(documentData)")
 #endif
 		
 		return documentData
@@ -248,7 +248,7 @@ public struct SuperagentSDK {
 		}
 		
 #if DEBUG
-		print("updateDocument result: \(documentData)")
+		Swift.print("updateDocument result: \(documentData)")
 #endif
 		
 		return documentData
@@ -265,7 +265,7 @@ public struct SuperagentSDK {
 		}
 		
 #if DEBUG
-		print("getAgent result: \(agentData)")
+		Swift.print("getAgent result: \(agentData)")
 #endif
 		
 		//let decoder = JSONDecoder()
@@ -285,7 +285,7 @@ public struct SuperagentSDK {
 		}
 		
 #if DEBUG
-		print("deleteAgent result: \(agentData)")
+		Swift.print("deleteAgent result: \(agentData)")
 #endif
 		
 		return agentData
@@ -301,7 +301,7 @@ public struct SuperagentSDK {
 		}
 		
 #if DEBUG
-		print("listAgents result: \(agentData)")
+		Swift.print("listAgents result: \(agentData)")
 #endif
 		
 		return agentData
@@ -321,7 +321,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("createAgent result: \(agentData)")
+		Swift.print("createAgent result: \(agentData)")
 #endif
 		// WE MAY ADD RESPONSE MODELS LATER AND ADD JSON DECODING
 		
@@ -345,18 +345,19 @@ public struct SuperagentSDK {
 		let payload: [String: Any] = ["input": prediction.input,
 									  "has_Streaming": prediction.hasStreaming as Any,
 									  "session": prediction.session as Any]
+
 #if DEBUG
-		print("Prediction payload: \(payload)")
+		Swift.print("Prediction payload: \(payload)")
 #endif
 		let data = try await request(method: .post, endpoint: "/agents/\(agentId)/predict", data: payload)
 #if DEBUG
-		print("Prediction data:\(data)")
+		Swift.print("Prediction data:\(data)")
 #endif
 		guard let responseData = data as? [String: Any],
 			  let predictionData = responseData["data"] as? String else {
 			throw SuperagentError.failedToRetrieve
 		}
-		print("createPrediction result: \(predictionData)")
+		Swift.print("createPrediction result: \(predictionData)")
 		return predictionData
 	}
 	
@@ -370,7 +371,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("getAgentDocuments result: \(agentLibrary)")
+		Swift.print("getAgentDocuments result: \(agentLibrary)")
 #endif
 		return agentLibrary
 	}
@@ -386,7 +387,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("getAgentDocuments result: \(agentDocuments)")
+		Swift.print("getAgentDocuments result: \(agentDocuments)")
 #endif
 		return agentDocuments
 	}
@@ -400,7 +401,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("getAgentDocuments result: \(agentDocument)")
+		Swift.print("getAgentDocuments result: \(agentDocument)")
 #endif
 		return agentDocument
 	}
@@ -415,7 +416,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToCreate
 		}
 #if DEBUG
-		print("createAgentDocument result: \(agentDocument)")
+		Swift.print("createAgentDocument result: \(agentDocument)")
 #endif
 		return agentDocument
 	}
@@ -429,7 +430,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("deleteAgentDocument result: \(agentDocument)")
+		Swift.print("deleteAgentDocument result: \(agentDocument)")
 #endif
 		return agentDocument
 	}
@@ -444,7 +445,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("getAgentTools result: \(agentTool)")
+		Swift.print("getAgentTools result: \(agentTool)")
 #endif
 		return agentTool
 	}
@@ -458,7 +459,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("getAgentTools result: \(agentTools)")
+		Swift.print("getAgentTools result: \(agentTools)")
 #endif
 		return agentTools
 	}
@@ -473,7 +474,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToUpdate
 		}
 #if DEBUG
-		print("addToolToAgent result: \(agentToolData)")
+		Swift.print("addToolToAgent result: \(agentToolData)")
 #endif
 		return agentToolData
 	}
@@ -487,7 +488,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.requestFailed
 		}
 #if DEBUG
-		print("deleteAgentTool result: \(success)")
+		Swift.print("deleteAgentTool result: \(success)")
 #endif
 		return success
 	}
@@ -502,7 +503,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("getTool result: \(toolData)")
+		Swift.print("getTool result: \(toolData)")
 #endif
 		return toolData
 	}
@@ -516,7 +517,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.requestFailed
 		}
 #if DEBUG
-		print("deleteTool result: \(toolData)")
+		Swift.print("deleteTool result: \(toolData)")
 #endif
 		return toolData
 	}
@@ -530,7 +531,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("listTools result: \(toolData)")
+		Swift.print("listTools result: \(toolData)")
 #endif
 		return toolData
 	}
@@ -548,7 +549,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToCreate
 		}
 #if DEBUG
-		print("createTool result: \(toolData)")
+		Swift.print("createTool result: \(toolData)")
 #endif
 		return toolData
 	}
@@ -563,11 +564,11 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("getTag result: \(tagData)")
+		Swift.print("getTag result: \(tagData)")
 #endif
 		return tagData
 	}
-	
+
 	///Delete tool
 	public func deleteTag(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/tags/\(id)")
@@ -577,11 +578,11 @@ public struct SuperagentSDK {
 			throw SuperagentError.requestFailed
 		}
 #if DEBUG
-		print("deleteTag result: \(tagData)")
+		Swift.print("deleteTag result: \(tagData)")
 #endif
 		return tagData
 	}
-	
+
 	///Lists all tools
 	public func listTags() async throws -> [[String: Any]] {
 		let data = try await request(method: .get, endpoint: "/tags")
@@ -591,11 +592,10 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToRetrieve
 		}
 #if DEBUG
-		print("listTagss result: \(tagsData)")
+		Swift.print("listTagss result: \(tagsData)")
 #endif
 		return tagsData
 	}
-	
 	///Create a new tool
 	public func createTag(tag: Tag) async throws -> [String: Any] {
 		var payload: [String: Any] = ["name": tag.name, "type": tag.color, "userId": tag.userId ?? ""]
@@ -606,7 +606,7 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToCreate
 		}
 #if DEBUG
-		print("createTag result: \(tagData)")
+		Swift.print("createTag result: \(tagData)")
 #endif
 		return tagData
 	}
@@ -621,10 +621,8 @@ public struct SuperagentSDK {
 			throw SuperagentError.failedToUpdate
 		}
 #if DEBUG
-		print("updateTag result: \(tagData)")
+		Swift.print("updateTag result: \(tagData)")
 #endif
 		return tagData
 	}
-	
-	
 }
