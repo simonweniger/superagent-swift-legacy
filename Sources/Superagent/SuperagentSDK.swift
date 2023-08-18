@@ -69,13 +69,13 @@ public struct SuperagentSDK {
 	private func request(method: HttpMethod, endpoint: String, data: [String: Any]? = nil) async throws -> Any  {
 		let request = try createRequest(method: method, endpoint: endpoint, data: data)
 		let (data, response) = try await URLSession.shared.data(for: request)
-	  
+		
 		if let httpResponse = response as? HTTPURLResponse, 200..<300 ~= httpResponse.statusCode {
-		  if let output = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-			  return output
-		  } else {
-			  throw SuperagentError.invalidResponse
-		  }
+			if let output = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+				return output
+			} else {
+				throw SuperagentError.invalidResponse
+			}
 		}
 		return response
 	}
@@ -178,7 +178,7 @@ public struct SuperagentSDK {
 		
 		return documentData
 	}
-
+	
 	///Delete document
 	public func deleteDocument(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/documents/\(id)")
@@ -192,7 +192,7 @@ public struct SuperagentSDK {
 		
 		return documentData
 	}
-
+	
 	///Lists all documents
 	public func listDocuments() async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/documents")
@@ -206,10 +206,12 @@ public struct SuperagentSDK {
 		
 		return documentData
 	}
-
+	
 	///Create a new document
 	public func createDocument(document: Document) async throws -> [String: Any] {
 		let payload: [String: Any] = ["name": document.name,
+									  "description" : document.description as Any,
+									  "content" : document.content,
 									  "splitter": ["type": document.splitter?.type as Any, "chunk_size": document.splitter?.chunkSize as Any, "chunk_overlap": document.splitter?.chunkOverlap as Any],
 									  "url": document.url as Any,
 									  "type": document.type,
@@ -231,10 +233,12 @@ public struct SuperagentSDK {
 	///Patch a document
 	public func updateDocument(id: String, document: Document) async throws -> [String: Any] {
 		let payload: [String: Any] = ["name": document.name,
-									 "splitter": ["type": document.splitter?.type as Any, "chunk_size": document.splitter?.chunkSize as Any, "chunk_overlap": document.splitter?.chunkOverlap as Any],
-									 "url": document.url as Any,
-									 "type": document.type,
-									 "authorization": document.authorization as Any]
+									  "description" : document.description as Any,
+									  "content" : document.content,
+									  "splitter": ["type": document.splitter?.type as Any, "chunk_size": document.splitter?.chunkSize as Any, "chunk_overlap": document.splitter?.chunkOverlap as Any],
+									  "url": document.url as Any,
+									  "type": document.type,
+									  "authorization": document.authorization as Any]
 		let data = try await request(method: .patch, endpoint: "/documents/\(id)", data: payload)
 		
 		guard let responseData = data as? [String: Any],
@@ -270,7 +274,7 @@ public struct SuperagentSDK {
 		
 		return agentData
 	}
-
+	
 	///Delete agent
 	public func deleteAgent(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/agents/\(id)")
@@ -286,7 +290,7 @@ public struct SuperagentSDK {
 		
 		return agentData
 	}
-
+	
 	///Lists all agents
 	public func listAgents() async throws -> [String: Any] {
 		let data = try await request(method: .get, endpoint: "/agents")
@@ -311,7 +315,7 @@ public struct SuperagentSDK {
 									  "hasMemory": agent.hasMemory as Any,
 									  "promptId": agent.promptId ?? ""]
 		let data = try await request(method: .post, endpoint: "/agents", data: payload)
-
+		
 		guard let responseData = data as? [String: Any],
 			  let agentData = responseData["data"] as? [String: Any] else {
 			throw SuperagentError.failedToRetrieve
@@ -334,12 +338,13 @@ public struct SuperagentSDK {
 		return agentData
 	}
 	
-
+	
 	///Create a new prediction
 	public func createPrediction(agentId: String, prediction: PredictAgent) async throws -> String {
 		//print("create Prediction called")
 		let payload: [String: Any] = ["input": prediction.input,
-									  "has_Streaming": prediction.hasStreaming as Any]
+									  "has_Streaming": prediction.hasStreaming as Any,
+									  "session": prediction.session as Any]
 #if DEBUG
 		print("Prediction payload: \(payload)")
 #endif
@@ -399,7 +404,7 @@ public struct SuperagentSDK {
 #endif
 		return agentDocument
 	}
-
+	
 	///Add a Document to an Agent
 	public func addDocumentToAgent(documentId: String, agentId: String) async throws -> [String: Any] {
 		let payload: [String: Any] = ["documentId": documentId, "agentId": agentId]
@@ -414,7 +419,7 @@ public struct SuperagentSDK {
 #endif
 		return agentDocument
 	}
-
+	
 	///Delete a Document from an Agent
 	public func deleteAgentDocument(agentDocumentId: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/agent-documents/\(agentDocumentId)")
@@ -428,7 +433,7 @@ public struct SuperagentSDK {
 #endif
 		return agentDocument
 	}
-
+	
 	//Agent Tools
 	///Get all Tools from an Agent
 	public func listAgentTools(agentToolId: String) async throws -> [String: Any] {
@@ -457,7 +462,7 @@ public struct SuperagentSDK {
 #endif
 		return agentTools
 	}
-
+	
 	///Add a Tool to an Agent
 	public func addToolToAgent(agentId: String, toolId: String) async throws -> [String: Any] {
 		let payload: [String: Any] = ["agentId": agentId, "toolId": toolId]
@@ -472,7 +477,7 @@ public struct SuperagentSDK {
 #endif
 		return agentToolData
 	}
-
+	
 	///Delete a Tool from an Agent
 	public func deleteAgentTool(agentToolId: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/agent-documents/\(agentToolId)")
@@ -501,7 +506,7 @@ public struct SuperagentSDK {
 #endif
 		return toolData
 	}
-
+	
 	///Delete tool
 	public func deleteTool(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/tools/\(id)")
@@ -515,7 +520,7 @@ public struct SuperagentSDK {
 #endif
 		return toolData
 	}
-
+	
 	///Lists all tools
 	public func listTools() async throws -> [[String: Any]] {
 		let data = try await request(method: .get, endpoint: "/tools")
@@ -529,7 +534,7 @@ public struct SuperagentSDK {
 #endif
 		return toolData
 	}
-
+	
 	///Create a new tool
 	public func createTool(tool: Tool) async throws -> [String: Any] {
 		var payload: [String: Any] = ["name": tool.name, "type": tool.type]
@@ -562,7 +567,7 @@ public struct SuperagentSDK {
 #endif
 		return tagData
 	}
-
+	
 	///Delete tool
 	public func deleteTag(id: String) async throws -> [String: Any] {
 		let data = try await request(method: .delete, endpoint: "/tags/\(id)")
@@ -576,7 +581,7 @@ public struct SuperagentSDK {
 #endif
 		return tagData
 	}
-
+	
 	///Lists all tools
 	public func listTags() async throws -> [[String: Any]] {
 		let data = try await request(method: .get, endpoint: "/tags")
@@ -590,7 +595,7 @@ public struct SuperagentSDK {
 #endif
 		return tagsData
 	}
-
+	
 	///Create a new tool
 	public func createTag(tag: Tag) async throws -> [String: Any] {
 		var payload: [String: Any] = ["name": tag.name, "type": tag.color, "userId": tag.userId ?? ""]
