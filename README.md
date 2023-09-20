@@ -1,4 +1,7 @@
-# ``Superagent - Swift SDK``
+# This is the SDK for the Superagent Legacy version. You find the [updated version here](https://github.com/simonweniger/superagent-swift). !!THIS REPO ISN'T SUPPORTED ANYMORE!!
+
+
+## ``Superagent Legacy - Swift SDK``
 [![SwiftUI](https://img.shields.io/badge/-SwiftUI-ff69b4)](https://developer.apple.com/documentation/swiftui)
 [![iOS 16](https://img.shields.io/badge/-iOS%2016-blue)](https://developer.apple.com/ios/)
 <img alt="Github License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
