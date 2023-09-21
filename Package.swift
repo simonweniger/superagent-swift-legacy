@@ -4,20 +4,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "Superagent",
+    name: "Superagent Legacy",
 	platforms: [.iOS(.v15), .macOS(.v12), .tvOS(.v15), .watchOS(.v8)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "Superagent",
-            targets: ["Superagent"]),
+            name: "Superagent Legacy",
+            targets: ["Superagent Legacy"]),
     ],
 	targets: [
 			.target(
-				name: "Superagent"),
+				name: "Superagent Legacy"),
 			.testTarget(
 				name: "SuperagentTests",
-				dependencies: ["Superagent"]),
+				dependencies: ["Superagent Legacy"]),
 		]
 )
 
